@@ -20,7 +20,8 @@
         
         1.vector头文件：#include <vector>
         
-        2.namespace std {
+        2.vector在头文件中定义如下：
+        namespace std {
                 template <class T, class Allocator = allocator<T> >
                 class vector;
         }
@@ -77,3 +78,42 @@
                 c.resize(num)                   将元素数量改为num（如果size()变大了，多出来的新元素都需以default构造函数构造完成）
                 c.resize(num, elem)             将元素数量改为num（如果size()变大了，多出来的新元素都是elem的副本）
                 c.clear()                       将容器清空
+                
+                
+####stack
+        
+        1.stack头文件：#include <stack>
+        
+        2.stack在头文件中定义如下：
+        namespace std {
+                template <class T, class Container = deque<T> >
+                class stack;
+        }
+        参数T代表stack的元素类型，带有默认值的第二个参数用来定义stack内部存放元素所用的实际容器，缺省采用deque。之所以采用
+        deque而不是vector，是因为deque移除元素时会释放内存并且不必在重新分配时复制全部元素。实际上stack只是很单纯的把各项
+        操作转化为内部容器的对应调用，你可以使用任何序列式容器来支持stack，只要他们支持back()，push_back()，pop_back()即可。
+        
+        由于stack系以底部容器完成其所有工作，所以往往不被归类为container（容器），而被归类为container adapter（配接器）。
+        
+        stack没有迭代器。
+        
+        3.stack的各项操作：
+                
+                stack::stack()  默认构造函数，产生一个空的stack
+                
+                explicit stack::stack(const Container& cont)    产生一个stack，并以容器cont内的元素为初值（复制）
+                
+                size_type stack::size() const   返回元素个数
+                
+                bool stack::empty() const       判断stack是否为空
+                
+                void stack::push(const value_type& elem)        将elem副本插入stack使其成为新的第一个元素
+                
+                value_type& stack::top()
+                const value_type& stack::top() const    返回stack栈顶元素，调用者必须保证stack不为空，否则可能有未定义行为
+                
+                void stack::pop()       移除stack栈顶元素，调用者必须确保stack不为空，否则可能是未定义行为
+                
+                bool comparison(const stack& st1, const stack& st2)     返回两个同型stack的比较结果comparison可以是
+                                                        operator=，operator!=，operator<， operator>，operator<=，operator>=
+        
