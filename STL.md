@@ -24,8 +24,8 @@
                 template <class T, class Allocator = allocator<T> >
                 class vector;
         }
-        vector的元素可以是任意类型T，但必须具备assignable和copyable两个性质。第二个template参数可有可无，用来定义内存模型，
-        缺省的模型是C++标准程序库提供的allocator。
+        vector的元素可以是任意类型T，但必须具备assignable（可赋值的）和copyable（可赋值的）两个性质。第二个template参数可
+        有可无，用来定义内存模型，缺省的模型是C++标准程序库提供的allocator。
         
         3.在末端添加或删除元素时，vector的性能相当好。可是如果你在前端或中部安插或删除元素，性能就不怎么样了，因为操作点之
         后的每一个元素都必须移动到另一个位置，而每一次移动都得调用assignment操作符。
