@@ -1,5 +1,6 @@
 ##STL
 
+
 ####内存分区
 
         1.堆：由程序员手动分配和释放，完全不同于数据结构中的堆，分配方式类似链表。由malloc（C语言）或new（C++）来分配，free
@@ -15,9 +16,10 @@
         
         5.程序代码区：存放函数体的二进制代码。
         
-        
+
+
 ####vector
-        
+
         1.vector头文件：#include <vector>
         
         2.vector在头文件中定义如下：
@@ -79,9 +81,10 @@
                 c.resize(num, elem)             将元素数量改为num（如果size()变大了，多出来的新元素都是elem的副本）
                 c.clear()                       将容器清空
                 
-                
-####stack
+
         
+####stack
+
         1.stack头文件：#include <stack>
         
         2.stack在头文件中定义如下：
@@ -117,6 +120,7 @@
                 bool comparison(const stack& st1, const stack& st2)     返回两个同型stack的比较结果comparison可以是
                                                         operator=，operator!=，operator<， operator>，operator<=，operator>=
         
+
 
 ####priority_queue
 
@@ -160,3 +164,75 @@
                                                         
         void priority_queue::pop()      移除priority_queue的“下一个”元素，调用者必须保证priority_queue不为空，否则可能出现
                                         未定义行为
+
+
+
+####set/multiset
+
+        1.set/multiset头文件：#include <set>
+        
+        2.set/multiset在头文件中的定义：
+        namespace std {
+                template <class T, class Compare = less<T>, class Allocator = allocator<T> >
+                class set;
+                
+                template <class T, class Compare = less<T>, class Allocator = allocator<T> >
+                class multiset;
+        }
+        只要T是assignable、copyable、comparable的类型，都可以成为set或multiset的元素类型。
+        
+        multiset的特性以及用法和set完全相同，唯一的差别在于它允许键值重复。
+        
+        set/multiset的排序准则必须是strict weak ordering（严格弱序化），其意义是：
+                1）必须是反对称的，对判断式op而言，如果op(x,y)为真，则op(y,x)为假。
+                2）必须是可传递的，如果op(x,y)为真且op(y,z)为真则op(x,z)。
+                3）必须是非自反的，op(x,x)永远为假。
+                
+        3.set/multiset通常都是以平衡二叉树来实现的，事实上set/multiset的实现版本大多以红黑树来实现，它保证结点安插时最
+        多只会做两个重新连接动作，而且到达某一元素的最长路径最多只是最短路径深度的两倍。
+        
+        4.set/multiset的各项操作：
+        set c                   产生一个空set/multiset
+        set c(op)               以op为排序准则产生一个空set/multiset
+        set c1(c2)              产生某一个set/multiset的副本
+        set c(beg, end)         以区间[beg, end)内的元素产生一个set/multiset
+        set c(beg, end, op)     以op为排序准则，以区间[beg, end)内的元素产生一个set/multise
+        c.~set()                销毁所有元素，释放内存
+        其中set可为下列形式：set<Elem>、set<Elem, op>、multiset<Elem>、multiset<Elem, op>
+        
+        c.size()        返回当前的元素数量
+        c.empty()       判断c是否为空
+        c.max_size()    返回可容纳的元素最大数值
+        c1 compare c2   compare可为==，!=，<，>，<=和>=
+        
+        c.count(elem)           返回“元素值为elem”的元素个数
+        c.find(elem)            返回“元素值为elem”的第一个元素的迭代器，如果找不到就返回end()
+        c.lower_bound(elem)     返回elem的第一个可安插位置，也就是“元素值>=elem”的第一个元素位置
+        c.upper_bound(elem)     返回elem的最后一个可安插位置，也就是“元素值>elem”的第一个元素位置
+        c.equal_range(elem)     返回elem的第一个和最后一个位置，也就是“元素值==elem”的第一个元素区间，返回值为将
+                                lower_bound()和upper_bound()的返回值做成一个pair返回
+                                
+        c1 = c2         将c2全部元素赋值给c1
+        c1.swap(c2)     将c1和c2元素互换
+        
+        c.begin()       返回一个双向存取迭代器（将元素视为常数），指向第一个元素
+        c.end()         返回一个双向存取迭代器（将元素视为常数），指向最后元素的下一个位置
+        c.rbegin()      返回一个逆向迭代器，指向逆向迭代的第一个元素
+        c.rend()        返回一个逆向迭代器，指向逆向迭代的最后元素的下一个位置
+        
+        c.insert(elem)          插入一个elem副本并返回新元素的位置
+        c.insert(it, elem)      插入一个elem副本并返回新元素的位置（it是一个提示指出安插操作的搜寻起点）
+        c.insert(beg, end)      插入区间[beg, end)内的所有元素副本，无返回值
+        c.erase(elem)           移除“与elem相等”的所有元素，返回被移除元素的个数
+        c.erase(it)             移除it位置上的元素，无返回
+        c.erase(beg, end)       移除[beg, end)区间内的所有元素，无返回
+        c.clear()               将容器清空
+        
+        set提供如下接口：
+        pair<iterator, bool> insert(const value_type& elem);
+                pair结构中的second成员表示安插是否成功；first成员返回新元素的位置或返回现存的同值元素位置
+        iterator insert(iterator pos_hint, const value_type& elem);
+        
+        multiset提供如下接口：
+        iterator insert(const value_type& elem);
+        iterator insert(iterator pos_hint, const value_type& elem);
