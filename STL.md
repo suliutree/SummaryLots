@@ -117,3 +117,46 @@
                 bool comparison(const stack& st1, const stack& st2)     返回两个同型stack的比较结果comparison可以是
                                                         operator=，operator!=，operator<， operator>，operator<=，operator>=
         
+
+####priority_queue
+
+        1.priority_queue头文件：#include <queue>
+        
+        2.priority_queue在头文件中定义如下：
+        namespace std {
+                template <class T, class Container = vector<T>, class Compare = less<typename Container::value_type> >
+                class priority_queue;
+        }
+        第一个参数T表示元素类型，第二个参数用来定义priority_queue内部存放元素所用的实际容器，默认采用vector。第三个参数定
+        义出“用以搜索下一个最高优先元素”的排序准则，缺省下是以 operator < 作为比较准则。实际上priority_queue只是很单纯的
+        把各项操作转化为内部容器对应的调用，你可以使用任何序列式容器来支持priority_queue，只要它们支持随机迭代器和front()，
+        push_back()，pop_back()等动作就行。由于priority_queue需要用到STL heap算法，所以其内部容器必须支持随机存取迭代器。
+        
+        priority_queue没有迭代器。
+        
+        3.priority_queue各项操作：
+        priori_queue::priority_queue()  默认构造函数，产生一个空的priority_queue
+        
+        explicit priority_queue::priority_queue(const ComFunc& op)      
+        产生一个priority_queue，以op为排序准则
+        
+        priority_queue::priority_queue(const ComFunc& op, const Container& cont)        
+        产生一个priority_queue，以op为排序准则，并以容器cont内的元素为初值（复制）
+                                                                                        
+        priority_queue::priority_queue(InputIterator beg, InputIterator end)    
+        产生一个priority_queue，以区间[beg, end)内的元素为初值
+                                                                                
+        priority_queue::priority_queue(InputIterator beg, InputIterator end, const ComFunc& op, const Container& cont)
+        产生一个priority_queue，以区间[beg, end)内的元素为初值，以op为排序准则及容器cont内的元素为初值
+        
+        size_type priority_queue::size() const  返回元素个数
+        
+        bool priority_queue::empty() const      判断priority_queue是否为空
+        
+        void priority_queue::push(const value_type& elem)       将elem的副本插入priority_queue
+        
+        const value_type& priority_queue::top() const   返回priority_queue的“下一个元素”，调用者必须确保priority_queue不
+                                                        为空，否则可能出现未定义的行为
+                                                        
+        void priority_queue::pop()      移除priority_queue的“下一个”元素，调用者必须保证priority_queue不为空，否则可能出现
+                                        未定义行为
