@@ -236,3 +236,65 @@
         multiset提供如下接口：
         iterator insert(const value_type& elem);
         iterator insert(iterator pos_hint, const value_type& elem);
+
+
+
+####map/multimap
+
+        1.map/multimap头文件：#include <map>
+        
+        2.map/multimap在头文件中的定义：
+        namespace std {
+                template <class key, class T, class Compare = less<key>, 
+                          class Allocator = allocator<pair<const key, T> > >
+                class map;
+                
+                template <class key, class T, class Compare = less<key>, 
+                          class Allocator = allocator<pair<const key, T> > >
+                class multimap;
+        }
+        第一个template参数为元素的key，第二个参数为元素的value。key和value必须具备assignable和copyable的性质，对排序而言
+        key必须是comparable。第三个参数为排序准则，这个排序准则必须是strict weak ordering的,元素的次序由他们的key决定，
+        和value无关，map/multimap根据元素的key自动对元素进行排序。
+        
+        和所有关联式容器一样，map/multimap通常以平衡二叉树来完成。
+        
+        3.map/multimap的各项操作：
+        map c                   产生一个空map/multimap
+        map c(op)               以op为排序准则产生一个空map/multimap
+        map c1(c2)              产生某一个map/multimap的副本
+        map c(begin, end)       以区间[begin, end)的元素产生一个map/multimap
+        map c(begin, end, op)   以op为排序准则，以区间[beg, end)内的元素产生一个map/multimap
+        c.~map()                销毁所有元素，释放内存
+        其中map可为下列形式：map<Key, Elem>、map<Key, Elem, op>、multimap<Key, Elem>、multimap<Key, Elem, op>
+        
+        c.size()        返回当前元素的数量
+        c.empty()       判断c是否为空
+        c.max_size()    返回可容纳的元素最大数值
+        c1 compare c2   compare可为==，!=，<，>，<=，>=
+        
+        c.count(elem)           返回“键值等于key”的元素个数
+        c.find(elem)            返回“键值等于key”的第一个元素的迭代器，如果找不到就返回end()
+        c.lower_bound(key)      返回“键值为key”之元素的第一个可安插位置，也就是“键值>=key”的第一个元素位置
+        c.upper_bound(key)      返回“键值为key”之元素的最后一个可安插位置，也就是“键值>key”的第一个元素位置
+        c.equal_range(key)      返回“键值为key”之元素的第一个和最后一个可安插位置，也就是“键值==key”的元素区间
+        lower_bound()、upper_bound()和equal_range()行为与set相应的函数十分相似，唯一不同的是：元素是一个key/value pair。
+        
+        c1 = c2         将c2全部元素赋值给c1
+        c1.swap(c2)     将c1和c2元素互换
+        
+        c.begin()       返回一个双向存取迭代器（将key视为常数），指向第一个元素
+        c.end()         返回一个双向存取迭代器（将key视为常数），指向最后元素的下一个位置
+        c.rbegin()      返回一个逆向迭代器，指向逆向迭代的第一个元素
+        c.rend()        返回一个逆向迭代器，指向逆向迭代的最后元素的下一个位置
+        这里的元素是一个key/value pair（pair<const key, T>）。
+        
+        c.insert(elem)          插入一个elem副本并返回新元素的位置
+        c.insert(it, elem)      安插elem副本返回新元素的位置（it是一个提示指出安插操作的搜寻起点）
+        c.insert(beg, end)      插入区间[beg, end)内的所有元素副本，无返回值
+        c.erase(elem)           移除“value与elem相等”的所有元素，返回被移除元素的个数
+        c.erase(it)             移除it位置上的元素，无返回
+        c.erase(beg, end)       移除[beg, end)区间内的所有元素，无返回
+        c.clear()               将容器清空
+        这里的元素是一个key/value pair（pair<const key, T>）。
+        
