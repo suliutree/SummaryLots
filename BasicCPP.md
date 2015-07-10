@@ -15,6 +15,161 @@
         
         5.程序代码区：存放函数体的二进制代码。
 
+
+
+####类和继承
+
+        #define NAME_SIZE 50
+        
+        class Person {
+                int id;                 // 所有成员默认为私有（private）
+                char name[NAME_SIZE];
+                
+        public:
+                void aboutMe()
+                {
+                        cout << "I am a person.";
+                }
+        };
+        
+        class Student {
+        public:
+                void aboutMe()
+                {
+                        cout << "I am a student.";
+                }
+        };
+        
+        Student* p = new Student();
+        p->aboutMe();   // 打印“I am a student.”
+        delete p;       // 务必释放之前分配的内存
+        
+        在C++中，所有数据成员和方法均默认为私有（private），可用关键字public修改其属性。
+
+
+
+####构造函数和析构函数
+
+        对象创建时会自动调用类的构造函数，如果没有定义构造函数，编译器会自动生成一个默认的构造函数（Default Constructor）。
+        自定义构造函数：
+                Person(int a) {
+                        id  = a;
+                }
+                或者
+                Person(int a) : id(a) { // 成员初值列
+                        ...
+                }
+                在真正对象创建之前，且在构造函数余下代码调用前，数据成员id就会被赋值。在常量数据成员赋值时（只能赋值
+                一次），这种写法特别适用。
+        
+        析构函数会在对象删除时执行清理工作。对象销毁时会自动调用析构函数。我们不会显示的调用析构函数，因此它不能带参数。
+                ~Person() {
+                        delete obj;     // 释放之前这个类里分配的内存
+                }
+
+
+
+####虚函数
+
+        类的一个成员定义为一个虚函数的实际意义在于让C++知道该函数并无意义，它的作用只是为了让派生类进行函数重载保留位
+        置。
+        
+        纯虚函数的定义方法就是在类的虚函数后面加上“ = 0 ”标记，类中一旦出现了纯虚函数的定义，那么此类为抽象类，不能实
+        例化。
+        
+        class Person {
+                int id;
+                char name[NAME_SIZE];
+        public:
+                virtual aboutMe() {
+                        cout << "I am a person.";
+                }
+                
+                virtual bool addCourse(string s) = 0;
+        };
+        
+        class Student : public Person {
+        public:
+                void aboutMe {
+                        cout << "I am a Student.";
+                }
+                
+                bool addCourse(string s) {
+                        cout << "Added Course " << s << "to student." << endl;
+                        return true;
+                }
+        };
+        
+        Person* p = new Student();
+        p->aboutMe();   // 打印“I am a student.”
+        p->addCourse("History");
+        delete p;
+        
+        虚析构函数：
+                class Person {
+                public:
+                        ~Person() {
+                                cout << "Deleteing a person." << endl;
+                        }
+                };
+                
+                class Student : public Person {
+                public:
+                        ~Student() {
+                                cout << "Deleting a student." << endl;
+                        }
+                };
+                
+                Person* p = new Student();
+                delete p;
+                
+                打印输出如下：
+                Deleting a student.
+                Deleting a person.
+        
+        虚函数工作原理：
+                虚函数需要虚函数表（Virtual Table）才能实现。如果一个类有函数声明称虚拟的，就会生成一个vtable，存放
+                这个类的虚函数地址。此外，编译器还会在类里加入隐藏的vptr变量（虚函数指针）。若子类没有覆写虚函数，该
+                子类的vtable就会存放父类的函数地址。调用这个虚函数时，就会通过vtable解析函数的地址。
+                在C++里，动态绑定就是通过vtable机制实现的。
+
+
+
+####深拷贝和浅拷贝
+
+        浅拷贝会将对象的所有成员的值拷贝到另一个对象里。除了拷贝所有对象的值，深拷贝还会进一步拷贝所有指针对象。
+        
+        struct Test {
+                char* ptr;
+        };
+        
+        void shallow_copy(Test& src, Test& dest) {
+                dest.ptr = src.ptr;
+        }
+        
+        void deep_copy(Test& src, Test& dest) {
+                dest.ptr = (char *)malloc(strlen(src.ptr) + 1);
+                strcpy(dest.ptr, src.ptr);
+        }
+        
+        shallow_copy可能会导致大量编程运行时错误，尤其是在对象创建和销毁时。使用浅拷贝是必须非常小心，只有当开发人员
+        真正知道自己在做些什么的时方可选用浅拷贝。多数情况下，使用浅拷贝是为了传递一块复杂的结构信息，但又不想真的复
+        制一份数据。使用浅拷贝时，销毁对象必须非常小心。
+        在实际开发中，浅拷贝很少使用。大部分情况都应该使用深拷贝。
+
+
+
+####指针和引用
+
+        指针存放有变量的地址，可直接作用于变量的所有操作都可以作用在指针上，比如访问和修改变量。指针的大小随着计算
+        机体系结构不同而不同：在32位机器上为32位，在64位机器上为64位。
+        
+        引用是既有对象的另一个名字（别名），引用本身并不占用内存。与指针不同，引用不能为空，也不能重新赋值指向另一
+        块内存。
+        
+
+
+
 ####static
 
         不考虑类，static的作用主要有3条：
@@ -67,6 +222,20 @@
         
         int Test::b = 0;        // static成员变量不能在构造函数初始化列表中初始化，因为它不属于某个对象
         const int Test::c = 0;  // 给const static成员变量赋值时，不需要加static修饰符，但要加const
+
+
+
+####在C++_中使用const比使用#define有更多的优点。
+
+        1）const常量有数据类型，而宏常量没有数据类型。编译器可以对前者进行安全类型检查。而对后者只进行字符替换，没有类
+        型安全检查，并且在字符替换时可能会产生意想不到的错误。
+        
+        2）使用常量可能比使用#define导致产生更小的目标代码，这是因为预处理器“盲目地将宏名称BUFSIZE替换为其代替的值100”
+        可能导致目标代码出现多份100的备份，但常量就不会出现这种情况。
+        
+        3）const还可以执行常量折叠（将常量表达式计算求值，并用求得的值来替换表达式），即编译器在进行编译时可以通过必要
+        的计算把一个复杂的常量表达式缩减成简单的。
+
 
 
 
