@@ -17,7 +17,7 @@
         5.程序代码区：存放函数体的二进制代码。
         
 
-
+<br>
 ####vector
 
         1.vector头文件：#include <vector>
@@ -82,7 +82,7 @@
                 c.clear()                       将容器清空
                 
 
-        
+<br>        
 ####stack
 
         1.stack头文件：#include <stack>
@@ -121,7 +121,7 @@
                                                         operator=，operator!=，operator<， operator>，operator<=，operator>=
         
 
-
+<br>
 ####priority_queue
 
         1.priority_queue头文件：#include <queue>
@@ -166,7 +166,7 @@
                                         未定义行为
 
 
-
+<br>
 ####set/multiset
 
         1.set/multiset头文件：#include <set>
@@ -238,7 +238,7 @@
         iterator insert(iterator pos_hint, const value_type& elem);
 
 
-
+<br>
 ####map/multimap
 
         1.map/multimap头文件：#include <map>
@@ -299,7 +299,7 @@
         这里的元素是一个key/value pair（pair<const key, T>）。
 
 
-
+<br>
 ####string类（属于C++标准库，不属于STL，但其是STL兼容的，可以应用迭代器，算法）
 
         1.string类头文件：#include <string>
@@ -427,5 +427,21 @@
         iterator rbegin();              返回string的最后一个字符的位置
         const_iterator rend()const;
         iterator rend();                返回string第一个字符位置的前面
+        
+        
+<br>
+####STL中的算法
+
+        1.使用STL中的算法，要包含头文件<algorithm>，某些STL算法用于数值处理，因此被定义于头文件<numeric>。
+        
+        2.所有STL算法都被设计用来处理一个或多个迭代器区间，第一个区间通常以起点和终点表示，至于其他区间，多数情况下只需
+        提供起点足矣，其终点可以自动以第一个区间的元素数量推断出来，调用者必须保证这些区间的有效性。
+        STL使用覆盖模式而非安插模式，所以调用者必须保证目标区间拥有足够的元素空间，当然也可以采用特殊的安插型迭代器将覆
+        盖模式变为安插模式。
+        
+        3.尾词_if：如果算法有两种形式，参数个数都相同，但第一形式的参数要求传递一个值，第二形式的参数要求传递一个函数或
+        仿函数，那么尾词_if就派上了用场，无尾词的那个要求传递数值，有尾词的那个要求传递函数或仿函数。不过并非所有“要求传
+        递仿函数”的算法都有尾词_if，如果算法以额外参数来接受这样的函数或仿函数，那么不同版本的算法就可以采用相同的命名。
+        尾词_copy：这个尾词用来表示在此算法中，元素不光被操作，还会被复制到目标区间。
         
         
