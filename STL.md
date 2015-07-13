@@ -444,4 +444,135 @@
         递仿函数”的算法都有尾词_if，如果算法以额外参数来接受这样的函数或仿函数，那么不同版本的算法就可以采用相同的命名。
         尾词_copy：这个尾词用来表示在此算法中，元素不光被操作，还会被复制到目标区间。
         
+        4.for_each()算法：UnaryProc for_each (InputIterator beg, InputIterator end, UnaryProc op);
+                1）对区间[beg, end)中的每一个元素调用op(elem)
+                2）返回op（已在算法内部被变动过）的一个副本
+                3）op的任何返回值都会被忽略
+                4）op可以变动元素
+                5）复杂度：线性
+        
+        5.元素计数算法：
+        difference_type count (InputIterator beg, InputIterator end, const T& value);
+        difference_type count_if (InputIterator beg, InputIterator end, UnaryPredicate op);
+        1）第一种形式会计算区间[beg, end)中的元素等于value的元素个数
+        2）第二种形式会计算区间[beg, end)中令以下一元判断式结果为true的元素个数：op(elem)
+        3）返回值型别为difference_type，是表现迭代器间距的型别
+        4）注意op在函数调用过程中不应该改变自身状态
+        5）op不应该改动传进来的参数
+        6）关联式容器（set/multiset，map/multimap）提供了一个等效的成员函数count()用来计算等于某个value或key的元素个数
+        7）时间复杂度：线性
+        
+        6.最大值最小值算法：
+        InputIterator min_element (InputIterator beg, InputIterator end);
+        InputIterator min_element (InputIterator beg, InputIterator end, CompFunc op);
+        InputIterator max_element (InputIterator beg, InputIterator end);
+        InputIterator max_element (InputIterator beg, InputIterator end, CompFunc op);
+        1）所有这些算法都返回区间[beg, end)中的最大或最小值的位置
+        2）上述无op参数版本以operator<进行元素比较
+        3）op用来比较两个元素：op(elem1, elem2)如果第一个元素小于第二个元素，应当返回true
+        4）如果存在多个最大或最小值，上述算法返回找到的第一个最大或最小值
+        5）op不应该改动传进去的参数
+        6）时间复杂度：线性
+        
+        7.搜寻元素算法：
+        InputIterator find (InputIterator beg, InputIterator end, const T& value);
+        InputIterator find_if (InputIterator beg, InputIterator end, UnaryPredicate op);
+        1）第一种形式返回区间[beg, end)中的第一个“元素值等于value”的元素位置
+        2）第二种形式返回区间[beg, end)中令一元判断式op(elem)结果为true的第一个元素的位置
+        3）如果没有找到匹配元素，两种形式都返回end
+        4）注意op在函数调用过程中不应该改变自身状态
+        5）op不应该改动传进来的参数
+        6）如果是已序区间，应使用lower_bound()，upper_bound()，equal_range()或binary_search()算法以获取更高的性能
+        7）关联式容器（set/multiset，map/multimap）提供了一个等效的成员函数find()，拥有对数时间复杂度
+        8）时间复杂度：线性
+        
+        InputIterator search_n (InputIterator beg, InputIterator end, Size count, const T& value);
+        InputIterator search_n (InputIterator beg, InputIterator end, Size count, const T& value, BinaryPredicate op);
+        1）第一种形式返回区间[beg, end)中的第一组“连续count个元素值全等于value”的元素位置
+        2）第二种形式返回区间[beg, end)中的第一组“连续count个元素使op(elem, value)结果为true”的元素位置
+        3）如果没有找到匹配元素，两种形式都返回end
+        4）注意op在函数调用过程中不应该改变自身状态
+        5）op不应该改动传进来的参数
+        7）时间复杂度：线性
+        
+        ForwardIterator1 search (ForwardIterator1 beg, ForwardIterator1 end, 
+                                        ForwardIterator2 searchBeg, ForwardIterator2 searchEnd);
+        ForwardIterator1 search (ForwardIterator1 beg, ForwardIterator1 end, 
+                                        ForwardIterator2 searchBeg, ForwardIterator2 searchEnd, BinaryPredicate op);
+        1）两种形式都返回区间[beg, end)内“和区间[searchBeg, searchEnd)完全吻合”的第一个子区间内的第一个元素位置
+        2）第一种形式中，子区间元素必须完全等于[searchBeg, searchEnd)的元素
+        3）第二种形式中，子区间元素和[searchBeg, searchEnd)的对应元素必须使op(elem, searchElem)结果为true
+        4）如果没有找到匹配子区间，两种形式都返回end
+        5）注意op在函数调用过程中不应该改变自身状态
+        6）op不应该改动传进来的参数
+        7）时间复杂度：线性
+        
+        ForwardIterator find_end (ForwardIterator beg, ForwardIterator end, 
+                                        ForwardIterator searchBeg, ForwardIterator searchEnd);
+        ForwardIterator find_end (ForwardIterator beg, ForwardIterator end, 
+                                        ForwardIterator searchBeg, ForwardIterator searchEnd, BinaryPredicate op);
+        1）两种形式都返回区间[beg, end)内“和区间[searchBeg, searchEnd)完全吻合”的最后一个子区间内的第一个元素位置
+        2）第一种形式中，子区间元素必须完全等于[searchBeg, searchEnd)的元素
+        3）第二种形式中，子区间元素和[searchBeg, searchEnd)的对应元素必须使op(elem, searchElem)结果为true
+        4）如果没有找到匹配子区间，两种形式都返回end
+        5）注意op在函数调用过程中不应该改变自身状态
+        6）op不应该改动传进来的参数
+        7）时间复杂度：线性
+        
+        ForwardIterator find_first_of (ForwardIterator1 beg, ForwardIterator1 end, 
+                                                ForwardIterator2 searchBeg, ForwardIterator2 searchEnd);
+        ForwardIterator find_first_of (ForwardIterator1 beg, ForwardIterator1 end, 
+                                                ForwardIterator2 searchBeg, ForwardIterator2 searchEnd, BinaryPredicate op);
+        1）第一种形式返回第一个“既在区间[beg, end)中出现，也在区间[searchBeg, searchEnd)中出现”的元素位置
+        2）第二种形式返回区间[beg, end)中的第一个这样的元素：他和区间[searchBeg, searchEnd)内的每一个元素进行op(elem,
+        searchElem)结果都为ture
+        3）如果没有找到匹配元素，两种形式都返回end
+        4）注意op在函数调用过程中不应该改变自身状态
+        5）op不应该改动传进来的参数
+        6）你可以使用逆向迭代器来搜寻最后一个这样的元素
+        7）时间复杂度：线性
+        
+        InputIterator adjacent_find (InputIterator beg, InputIterator end);
+        InputIterator adjacent_find (InputIterator beg, InputIterator end, BinaryPredicate op);
+        1）第一种形式返回区间[beg, end)中的第一对“连续两个相等元素”之中的第一个元素位置
+        2）第二种形式返回区间[beg, end)中的第一对“连续两个元素均使op(elem, nextElem)结果为true“的其中第一个元素位置
+        3）如果没有找到吻合元素，两种形式都返回end
+        4）注意op在函数调用过程中不应该改变自身状态
+        5）op不应该改动传进来的参数
+        6）时间复杂度：线性
+        
+        bool equal (InputIterator1 beg, InputIterator1 end, InputIterator2 cmpBeg);
+        bool equal (InputIterator1 beg, InputIterator1 end, InputIterator2 cmpBeg, BinaryPredicate op);
+        1）第一种形式判断区间[beg, end)内的元素是否都和以cmpBeg开头的区间内的元素相等
+        2）第二种形式判断区间[beg, end)内的元素和以cmpBeg开头的区间内的对应元素是否都能使op(elem, cmpElem)结果为true
+        3）调用者必须保证以cmpBeg开头的区间具有足够的元素
+        4）当序列不相等时，如果想要了解其间的不同，应使用mismatch()算法
+        5）注意op在函数调用过程中不应该改变自身状态
+        6）op不应该改动传进来的参数
+        7）时间复杂度：线性
+        
+        pair<InputIterator1, InputIterator2> mismatch (InputIterator1 beg, InputIterator1 end, 
+                                                                InputIterator2 cmpBeg);
+        pair<InputIterator1, InputIterator2> mismatch (InputIterator1 beg, InputIterator1 end, 
+                                                                InputIterator2 cmpBeg, BinaryPredicate op);
+        1）第一种形式返回区间[beg, end)和以cmpBeg开头的区间之中的第一组两两相异的对应元素
+        2）第二种形式返回区间[beg, end)和以cmpBeg开头的区间之中的第一组”使op(elem, cmpElem)结果为false“的对应元素
+        3）如果没有找到相异点，就返回一个pair，以end和第二序列的对应元素组成。这并不意味着两个序列相等，因为第二序列
+        有可能包含更多的元素
+        4）调用者必须保证以cmpBeg开头的区间具有足够的元素
+        5）如果想要了解两个序列是否相等，应使用equal()算法
+        6）注意op在函数调用过程中不应该改变自身状态
+        7）op不应该改动传进来的参数
+        8）时间复杂度：线性
+        
+        bool lexicographical_compare (InputIterator1 beg1, InputIterator1 end1, 
+                                                InputIterator2 beg2, InputIterator2 end2);
+        bool lexicographical_compare (InputIterator1 beg1, InputIterator1 end1, 
+                                                InputIterator2 beg2, InputIterator2 end2, CompFunc op);
+        1）两种形式都用来判断区间[beg1, end1)的元素是否小于区间[beg2, end2)的元素。所谓”小于“是指本着”字典次序“的意义
+        2）第一种形式使用operator<
+        3）第二种形式使用op(elem1, elem2)来判断
+        4）注意op在函数调用过程中不应该改变自身状态
+        5）op不应该改动传进来的参数
+        6）时间复杂度：线性
         
