@@ -576,3 +576,19 @@
         5）op不应该改动传进来的参数
         6）时间复杂度：线性
         
+        8.复制元素算法
+        OutputIterator copy (InputIterator sourceBeg, InputIterator sourceEnd,  OutputIterator destBeg);
+        BidirectionalIterator1 copy_backward (BidirectionalIterator1 sourceBeg,  BidirectionalIterator1 sourceEnd,
+                                                                                        BidirectionalIterator2 destEnd);
+        1）这两个算法都将源区间[sourceBeg, sourceEnd)中的所有元素复制到以destBeg为起点或以destEnd为终点的目标区间里去
+        2）返回目标区间内最后一个被复制的元素的下一个位置，也就是第一个未被覆盖的元素的位置
+        3）destBeg或destEnd不可处于[sourceBeg, sourceEnd)区间内
+        4）copy()正向遍历序列，copy_backward()逆向遍历序列
+        5）STL没有所谓的copy_if()算法，所以如果要复制符合某特定准则的元素，请使用remove_copy_if()算法
+        6）如果希望在复制过程中逆转元素次序，应该使用reverse_copy()
+        7）调用者必须保证目标区间有足够的空间，否则就得使用insert迭代器
+        8）如果想把容器内的所有元素赋值给另一容器，应当使用assignment操作符（当两个容器的型别相同时）或者使用容器的
+        assign()成员函数（当两个容器的型别不同时）
+        9）如果希望在复制过程中删除某元素，请使用remove_copy()和remove_copy_if()算法
+        10）如果希望在复制过程中改变元素，请使用transform()或replace_copy()算法
+        11）时间复杂度：线性
