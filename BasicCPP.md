@@ -271,11 +271,11 @@
 <br>
 ####malloc/free与new/delete
 
-        malloc/free是C/C++语言的标准库函数，new/delete是C++运算符。
+        malloc/free是C/C++语言的标准库函数，new/delete是C++操作符。
         对于用户自定义的对象而言，用malloc/free无法满足动态管理对象的要求。对象在创建的同时要自动执行构造函数，对象在
-        销毁之前要自动执行析构函数。由于malloc/free是库函数而不是运算符，不在编译器控制的权限范围内，不能够把执行构造
-        函数和析构函数的任务强加于malloc/free。因此，C++需要一个能完成动态内存分配和初始化的运算符new，以及一个能完成
-        清理与释放内存工作的运算符delete。
+        销毁之前要自动执行析构函数。malloc仅仅分配内存，free仅仅回收内存，并不执行构造函数和析构函数。由于malloc/free
+        是库函数而不是操作符，不在编译器控制的权限范围内，不能够把执行构造函数和析构函数的任务强加于malloc/free。因此，
+        C++需要一个能完成动态内存分配和初始化的运算符new，以及一个能完成清理与释放内存工作的运算符delete。
 
 
 <br>
@@ -406,3 +406,83 @@
         4）数组做sizeof的参数不退化，传递给strlen就退化成指针了。
 
 
+<br>
+####C++空类有哪些成员函数
+
+        1）缺省构造函数
+        2）缺省复制构造函数
+        3）缺省析构函数
+        4）缺省赋值运算符
+        5）缺省取址运算符
+        6）缺省取址运算符const
+        
+        只有当实际使用这些函数时，编译器才会去定义它们。
+        
+
+<br>
+####为CMyString类中各函数补齐函数体
+
+        class MyString
+        {
+        public:
+                CMyString(const char* pData = NULL);
+                CMyString(const CMyString& other);
+                ~CMyString();
+                CMyString& CMyString::operator =(const CMyString &str);
+                
+        private:
+                char* m_pData;
+        }
+        
+        CMyString::CMyString(const char* pData)
+        {
+                if (pData == NULL)
+                {
+                        m_pData = new char[1];
+                        *m_pData = '\0';
+                }
+                else
+                {
+                        int length = strlen(pData);
+                        m_pData = new char[length+1];
+                        strcpy(m_pData, pData);
+                }
+        }
+        
+        CMyString::CMyString(const CMyString &other)
+        {
+                int length = strlen(other.m_pData);
+                m_pData = new char[length+1];
+                strcpy(m_pData, other.m_pData);
+        }
+        
+        CMyString::~CMyString()
+        {
+                delete[] m_pData;
+        }
+        
+        CMyString& CMyString::operator =(const CMyString& str)
+        {
+                if (this == &str)
+                        return *this;
+                
+                delete[] m_pData;
+                m_pData = NULL;
+                m_pData = new char[strlen(str.m_pData) + 1];
+                strcpy(m_pData, str.m_pData);
+                retrun *this;
+        }
+        
+        定义一个赋值运算符函数需要注意以下几点：
+        1）是否把返回值的类型声明为该类型的引用，并在函数结束前返回实例自身的引用（*this）。只有返回一个引用，才可以允
+        许连续赋值。否则如果函数的返回值是void，应用该赋值运算符将不能做连续赋值。
+        
+        2）是否把传入的参数的类型声明为常量引用。如果传入的参数不是引用而是实例，那么从形参到实参会调用一次复制构造函
+        数。把参数声明为引用可以避免这样的无谓消耗，能提高代码的效率。同时，我们在复制运算符函数内不会改变传入的实例的
+        状态，因此应该为传入的引用参数加上const关键字。
+        
+        3）是否释放实例自身已有的内存。如果我们忘记在分配新内存之前释放自身已有的内存空间，程序将出现内存泄露。
+        
+        4）是否判断传入的参数和当前的实例（*this）是不是同一个实例。如果是同一个，则不进行赋值操作，直接返回。如果事先
+        不判断就进行赋值，那么在释放实例自身内存的时候就会导致严重的问题：当*this和传入的参数是同一个实例时，那么一旦释
+        放自身的内存，传入的参数的内存也同时被释放了，因此再也找不到需要赋值的内容了。
