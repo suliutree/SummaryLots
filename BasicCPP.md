@@ -32,7 +32,7 @@
                 }
         };
         
-        class Student {
+        class Student ：public Person {
         public:
                 void aboutMe()
                 {
