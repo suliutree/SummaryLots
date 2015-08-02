@@ -215,3 +215,85 @@
         
         除了栈以外，堆、只读数据区、全局变量地址增长方向都是从低到高的。
         
+<br>
+####7.改变string变量的值？
+
+        #include <iostream>
+        #include <string>
+        using namespace std;
+        
+        void chg_str(string str) {
+            str = "ichgit";
+        }
+        
+        int main() {
+            string s = "sarrr";
+            chg_str(s);
+            printf("%s\n", s.c_str());
+            cout << s << endl;
+            return 0;
+        }
+        
+        解答：输出 “sarrr”
+        string是传值参数，不能修改其值。要想改变string变量的值，可以改为传地址方式：
+        
+            #include <iostream>
+            #include <string>
+            using namespace std;
+            
+            void chg_str(string *str) {
+                *str = "ichgit";
+            }
+            
+            int main() {
+                string s = "sarrr";
+                chg_str(&s);
+                printf("%s\n", s.c_str());
+                cout << s << endl;
+                return 0;
+            }
+
+<br>
+####8.静态变量的输出
+
+        #include <stdio.h>
+        int sum(int a) {
+            int c = 0;
+            static int b = 3; // 只执行一次
+            c++;
+            b += 2;
+            return (a + b + c);
+        }
+        int main() {
+            int i;
+            int a = 2;
+            for(i = 0; i < 5; ++i) {
+                printf("%d\n", sum(a));
+            }
+            return 0;
+        }
+        
+        解答：输出 8 10 12 14 16
+        存储在静态数据区的变量会在程序刚开始运行时就完成初始化，也是唯一的一次初始化，此后该初始化不再执行，相当于一次执行
+        后就作废，静态局部变量保存了前次被调用后留下的值。
+
+<br>
+####9.返回值加const修饰的必要性
+
+        下面两种写法有区别吗？
+            int GetInt(void) 
+            const int GetInt(void)
+        
+        如果是下面两种呢？A为用户自定义对象。
+            A GetA(void)
+            const A GetA(void)
+            
+        解答：没有任何区别。
+        如果函数返回值采用“值传递方式”，由于函数会把返回值复制到外部临时的存储单元中，加const 修饰没有任何价值。所以，
+        对于值传递来说，加const没有太多意义。
+        
+        所以：
+            不要把函数int GetInt(void) 写成const int GetInt(void)。
+            不要把函数A GetA(void) 写成const A GetA(void)。
+        
+        在编程中要尽可能多的使用const（比如函数参数采用const&修饰），这样可以获得编译器的帮助，以便写出健壮性的代码。
