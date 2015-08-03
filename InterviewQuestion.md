@@ -407,7 +407,44 @@
             1）养成良好的习惯，确保malloc/new和free/delete配对；
             2）检测内存泄漏的关键原理就是检查malloc/new和free/delete是否匹配，一些检测内存泄漏的工具就是利用此原理。要
             做到这点，就是利用宏或者钩子，在用户程序与运行库之间加了一层，用于记录内存分配的情况。
-       
+ 
+ <br>
+ ####16.对字符串进行处理，字符串里面有连续的空格，写一个函数，去掉多余的空格
+
+        函数如下：
+        
+        void DeleteRedundantBlank(char* str, int length)
+        {
+        	if (str == NULL || length <= 0)
+        		return;
+        
+        	int indexOfOrigin = 0;
+        	int indexOfNew = 0;
+        
+        	while (str[indexOfOrigin] == ' ')
+        		indexOfOrigin++;
+        
+        	while (str[indexOfOrigin] != '\0')
+        	{
+        		if (str[indexOfOrigin] == ' ')
+        		{
+        			str[indexOfNew] = str[indexOfOrigin];
+        			int i = 1;
+        			while (str[indexOfOrigin + i] == ' ')
+        				i++;
+        			indexOfOrigin += i;
+        			indexOfNew++;
+        		}
+        		else
+        		{
+        			str[indexOfNew] = str[indexOfOrigin];
+        			indexOfOrigin++;
+        			indexOfNew++;
+        		}
+        	}
+        
+        	str[indexOfNew] = '\0';
+        }
         
 
 
