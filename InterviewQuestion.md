@@ -408,14 +408,14 @@
             2）检测内存泄漏的关键原理就是检查malloc/new和free/delete是否匹配，一些检测内存泄漏的工具就是利用此原理。要
             做到这点，就是利用宏或者钩子，在用户程序与运行库之间加了一层，用于记录内存分配的情况。
  
- <br>
- ####16.对字符串进行处理，字符串里面有连续的空格，写一个函数，去掉多余的空格
+<br>
+####16.对字符串进行处理，字符串里面有连续的空格，写一个函数，去掉多余的空格
 
         函数如下：
         
-        void DeleteRedundantBlank(char* str, int length)
+        void DeleteRedundantBlank(char* str)
         {
-        	if (str == NULL || length <= 0)
+        	if (str == NULL)
         		return;
         
         	int indexOfOrigin = 0;
@@ -445,6 +445,199 @@
         
         	str[indexOfNew] = '\0';
         }
+
+<br>
+####17.构造函数的功能？
+
+        构造函数是特殊的成员函数，与其他成员函数不同，构造函数和类同名，而且没有返回类型。一个类可以有多个构造函数，
+        每个构造函数必须有与其他构造函数不同数目或类型的形参。
         
+        构造函数的功能主要用于在类的对象创建时定义初始化的状态。
 
+<br>
+####18.析构函数的功能？释放的是哪里的内存？
 
+        析构函数也是一个特殊的成员函数，它的作用于构造函数相反。析构函数不返回任何值，没有函数类型，也没有函数参数。
+        因此它不能被重载。一个类可以有多个构造函数，但只能有一个析构函数。
+        
+        析构函数的功能主要是用于释放资源。
+
+<br>
+####19.迭代器失效
+
+        vector迭代器失效测试
+        
+        void vectorTest()
+        {
+            vector<int> container;
+            for (int i = 0; i < 10; i++)
+            {
+                container.push_back(i);
+            }
+        
+            vector<int>::iterator iter;
+             for (iter = container.begin(); iter != container.end(); iter++)
+            {
+                    if (*iter > 3)
+                      container.erase(iter);
+            }
+        
+             for (iter = container.begin(); iter != container.end(); iter++)
+            {
+                    cout<<*iter<<endl;
+            }
+        }
+       
+       会出现 Debug Assertion Failed! 的错误。
+       
+       对于序列式容器，比如vector，删除元素时，指向被删除元素之后的任何元素的迭代器都将失效。因为顺序容器的内存时连续
+       分配的，删除一个元素会导致后面所有的元素向前移动一个位置。
+       erase方法可以返回下一个有效的iterator，代码修改如下：
+       
+       void vectorTest()
+        {
+            vector<int> container;
+            for (int i = 0; i < 10; i++)
+            {
+                container.push_back(i);
+            }
+        
+            vector<int>::iterator iter;
+            for (iter = container.begin(); iter != container.end(); )
+            {
+                    if (*iter > 3)
+                      iter = container.erase(iter);    //erase的返回值是删除元素下一个元素的迭代器
+                    else
+                    {
+                        iter++;
+                    }
+            }
+        
+             for (iter = container.begin(); iter != container.end(); iter++)
+            {
+                    cout<<*iter<<endl;
+            }
+        }
+        
+        输出：0 1 2 3
+
+<br>
+####20.对于：const char *p = "Hello World"; 和 char q[] = "Hello World";分别求长度和所占用的空间大小？
+
+        strlen(p); // 11
+        sizeof(p); // 4（这里求出的是指针所占用的内存，而不是字符串）
+        
+        strlen(q); // 11
+        sizeof(q); // 12
+
+<br>
+####21.求一个数组中第k大的数？
+
+        快速选择算法（quick selection algorithm）:
+        
+        int Partition(int array[], int left, int right)
+        {
+        	int pivot = array[right];
+        
+        	while (left != right)
+        	{
+        		while (array[left] < pivot && left < right)
+        			++left;
+        		if (left < right)
+        			swap(array[left], array[right--]);
+        
+        		while (array[right] > pivot && left < right)
+        			--right;
+        		if (left < right)
+        			swap(array[left++], array[right]);
+        	}
+        
+        	return left;
+        }
+        
+        int QuickSelect(int array[], int left, int right, int k)
+        {
+        	if (left >= right)
+        		return array[left]; // 
+        
+        	int index = Partition(array, left, right);
+        	int size = index - left + 1; // 
+        	if (size == k)
+        	{
+        		return array[left + k - 1];
+        	}
+        	else if (size > k)
+        	{
+        		QuickSelect(array, left, index - 1, k);
+        	}
+        	else
+        	{
+        		QuickSelect(array, index + 1, right, k - size);
+        	}
+        }
+
+<br>
+####22.从源路径中读取一个文件，写入到目标路径文件中，写代码实现？
+
+        C++实现：
+            #include <fstream>
+            #include <string>
+            
+            using namespace std;
+            
+            int main()
+            {
+            	ifstream infile("in.txt");
+            	ofstream outfile("out.txt");
+            
+            	string s;
+            
+            	while (getline(infile, s))
+            		outfile << s << endl;
+            
+            	return 0;
+            }
+        
+        C语言实现：
+            #include <stdio.h>
+            #include <stdlib.h> // exit函数
+            
+            int main()
+            {
+            	FILE* fp1;
+            	FILE* fp2;
+            
+            	if ( (fp1 = fopen("in.txt", "r")) == NULL )
+            	{
+            		printf("can not open the file!");
+            		exit(0);// 表示非正常退出
+            	}
+            
+            	fp2 = fopen("out.txt", "w");
+            		
+            	char ch;
+            	while ( (ch = fgetc(fp1)) != EOF)
+            		fputc(ch, fp2);
+            
+            	return 0;
+            }
+        
+<br>
+####23.new和malloc都是堆分配，malloc后返回一个地址例如为p，如果p++后再free(p)，是否会出问题？
+
+    在VS中进行测试：
+        #include <stdio.h>
+        #include <stdlib.h>
+        
+        int main()
+        {
+        	int* p = (int *)malloc(sizeof(int)*100);
+        
+        	p++; // 会显示堆被损坏的错误
+        	free(p);
+        
+        	return 0;
+        }
+        
+    会丢失释放的一些具体信息，如释放内存大小等。
+        
