@@ -1062,8 +1062,7 @@
                 }
             }
             
-        参考我的数据结构与算法里的详细注释[KMPSearch][id]
-        [id]: https://github.com/suliutree/Data-Struct-and-Algorithm/blob/master/KMPSearch.cpp
+
             
             
             
