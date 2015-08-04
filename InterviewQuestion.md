@@ -640,4 +640,35 @@
         }
         
     会丢失释放的一些具体信息，如释放内存大小等。
+
+<br>
+####24.程序填空
+
+        #include <stdio.h>
+        void test(void *data)
+        {
+                unsigned int value = 填空处;
+                printf("%d\n", value);
+        }
+        void main()
+        {
+                unsigned int data = 10;
+                test(&data);
+        }
         
+        A.*data     B.(unsigned int)*data       C.(unsigned *)data      D.*(unsigned int*)data
+        
+        解答：选D。
+
+<br>
+####25.TCP/IP协议栈各个层次及分别的功能
+
+        网络接口层：这是协议栈的最低层，对应OSI（开放系统互联）的物理层和数据链路层，主要完成数据帧的实际发送与接收。
+        
+        网络层：处理分组在网络中的活动，例如路由选择和转发，这一层主要包括IP、ARP、ICMP协议。
+        
+        传输层：主要功能是提供应用程序之间的通信，这一层主要是TCP/UDP协议。
+        
+        应用层：用来处理特定的应用，针对不同的应用提供了不同的协议，例如进行文件传输时用到FTP协议，发送Email是用到SMTP等。
+
+
