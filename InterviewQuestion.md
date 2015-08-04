@@ -671,4 +671,100 @@
         
         应用层：用来处理特定的应用，针对不同的应用提供了不同的协议，例如进行文件传输时用到FTP协议，发送Email是用到SMTP等。
 
+<br>
+####26.求二叉树结点的最大距离
 
+        计算一个二叉树的最大距离有两种情况：
+        情况A：路径经过左子树的最深结点，通过根结点，再到右子树的最深结点；
+        情况B：路径不穿过根结点，而是左子树或右子树的最大距离路径，取其大者。
+        
+        只要计算这两种情况的路径距离，并取其大者，就是该二叉树的最大距离。
+        
+                            1                                       1
+                        /       \                               /
+                    2               3                           2
+                /       \       /       \                   /       \
+                4       5       6       7                   3       4
+            /                       \                   /               \
+            8                       9                   5               6
+                        情况A                                   情况B
+        
+        情况A及B需要不同的信息：A需要子树的最大深度，B需要子树的最大距离。需要函数能在一个结点同时计算及传回这两个信息。
+        代码如下：
+        
+        struct BinaryTreeNode
+        {
+        	int m_nValue;
+        	BinaryTreeNode* m_pLeft;
+        	BinaryTreeNode* m_pRight;
+        };
+        
+        struct Result 
+        {
+        	int nMaxDistance;
+        	int nMaxDepth;
+        };
+        
+        Result GetMaxDistance(BinaryTreeNode* pRoot)
+        {
+        	if (pRoot == NULL)
+        	{
+        		Result empty = {0, -1}; //最大深度初始化为-1的目的是让调用方+1后，把无子树结点最大深度置为0
+        		return empty;
+        	}
+        
+        	Result lhs = GetMaxDistance(pRoot->m_pLeft);
+        	Result rhs = GetMaxDistance(pRoot->m_pRight);
+        
+        	Result result;
+        	result.nMaxDepth = max(lhs.nMaxDepth + 1, rhs.nMaxDepth + 1);
+        	result.nMaxDistance = max( max(lhs.nMaxDistance, rhs.nMaxDistance), lhs.nMaxDepth + rhs.nMaxDepth + 2);
+        	return result;
+        }
+        
+<br>
+####27.用两个栈实现一个队列
+
+        class MyQueue
+        {
+        public:
+        	void enqueue(int value);
+        	int dequeue();
+        	bool isEmpty();
+        
+        private:
+        	stack<int> inputStack;
+        	stack<int> outputStack;
+        };
+        
+        void MyQueue::enqueue(int value)
+        {
+        	inputStack.push(value);
+        }
+        
+        int MyQueue::dequeue()
+        {
+        	int value;
+        
+        	if (!outputStack.empty())
+        	{
+        		value = outputStack.top();
+        		outputStack.pop();
+        		return value;
+        	}
+        
+        	while (!inputStack.empty())
+        	{
+        		outputStack.push(inputStack.top());
+        		inputStack.pop();
+        	}
+        
+        	value = outputStack.top();
+        	outputStack.pop();
+        	return value;
+        }
+        
+        bool MyQueue::isEmpty()
+        {
+        	return inputStack.empty() && outputStack.empty(); 
+        }
