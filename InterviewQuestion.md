@@ -823,6 +823,8 @@
             
             void Preorder(BinaryTreeNode* pRoot)
             {
+                if (pRoot == NULL)
+                    return;
                 printf("%d\t", pRoot->m_nValue);
                 Preorder(pRoot->m_pLeft);
                 Preorder(pRoot->m_pRight);
@@ -850,6 +852,222 @@
                     }
                 }
             }
+        
+        
+        中序遍历：
+        1）递归实现
+        
+            void Inorder(BinaryTreeNode* pRoot)
+            {
+                if (pRoot == NULL)
+                    return;
+                Inorder(pRoot->m_pLeft);
+                printf("%d\t", pRoot->m_nValue);
+                Inorder(pRoot->m_pRight);
+            }
+                
+        2）非递归实现
+        
+            void InorderIteration(BinaryTreeNode* pRoot)
+            {
+                stack<BinaryTreeNode*> stack;
+                BinaryTreeNode* p = pRoot;
+                while (p || !stack.empty())
+                {
+                    if (p != NULL)
+                    {
+                        stack.push(p);
+                        p = p->m_pLeft;
+                    }
+                    else
+                    {
+                        p = stack.top();
+                        stack.pop();
+                        printf("%d\t", p->m_nValue);
+                        p = p->m_pRight;
+                    }
+                }
+            }
+        
+        
+        后续遍历：
+        1）递归实现
+        
+            void Postorder(BinaryTreeNode* pRoot)
+            {
+                if (pRoot == NULL)
+                    return;
+                Postorder(pRoot->m_pLeft);
+                Postorder(pRoot->m_pRight);
+                printf("%d\t", pRoot->m_nValue);
+            }
+            
+        2）非递归实现
+        
+            void PostorderIteration(BinaryTreeNode* pRoot)
+            {
+                stack<BinaryTreeNode*> stack;
+                BinaryTreeNode* p = pRoot;
+                BinaryTreeNode* r = NULL; // 标记
+                
+                while (p || !stack.empty())
+                {
+                    if (p != NULL)
+                    {
+                        stack.push(p);
+                        p = p->m_pLeft;
+                    }
+                    else
+                    {
+                        p = stack.top();
+                        if (p->m_pRight && p->m_pRight != r)
+                        {
+                            p = p->m_pRight;
+                            stack.push(p);
+                            p = p->m_pRight;
+                        }
+                        else
+                        {
+                            p = stack.top();
+                            stack.pop();
+                            printf("%d\t", p->m_nValue);
+                            r = p;
+                            p = NULL;
+                        }
+                    }
+                }
+            }
+            
+<br>
+####30.二叉树的层序遍历
+
+        void LevelOrder(BinaryTreeNode* pRoot)
+        {
+            if (pRoot == NULL)
+                return;
+            
+            queue<BinaryTreeNode*> queueTreeNode;
+            queueTreeNode.push(pRoot);
+            
+            while (queueTreeNode.size() != 0)
+            {
+                BinaryTreeNode* pNode = queueTreeNode.front();
+                queueTreeNode.pop();
+                printf("%d\t", pNode->m_nValue);
+                
+                if (pNode->m_pLeft != NULL)
+                    queueTreeNode.push(pNode->m_pLeft);
+                if (pNode->m_pRight != NULL)
+                    queueTreeNode.push(pNode->m_pRight);
+            }
+        }
+
+<br>
+####31.字符匹配算法KMP
+
+        暴力匹配：
+            int ViolentMatch(char* s, char* p)
+            {
+                int sLen = strlen(s);
+                int pLen = strLen(p);
+                int i = 0;
+                int j = 0;
+                
+                while (i < sLen && j < pLen)
+                {
+                    if (s[i] == p[j])
+                    {
+                        i++;
+                        j++;
+                    }
+                    else
+                    {
+                        i = i - j + 1;
+                        j = 0;
+                    }
+                }
+                
+                if (j == pLen)
+                    return i - j;
+                else
+                    return -1;
+            }
+        
+        KMP算法：
+        
+            /*
+            原始串：BBC ABCDAB ABCDABCDABDE
+            匹配串：ABCDABD
+             A B C D A B D
+            -1 0 0 0 0 1 2
+            BBC ABCDAB ABCDABCDABDE
+                ABCDABD
+            当字符串匹配到这里时 i = 10，j = 6，此时 j!=-1 而且当前字符不匹配
+            执行 j = next[j]，j则为2，在执行下一步时会比较 s[10] 与 p[2]，如下：
+            BBC ABCDAB ABCDABCDABDE
+                    ABCDABD
+            s[10]与p[2]不匹配，执行 j = next[j]，j则为0，下一步比较 s[10] 与 p[0]，如下：
+            BBC ABCDAB ABCDABCDABDE
+                      ABCDABD
+            以此类推
+            */
+            int KMPSearch(char* s, char* p)
+            {
+                int sLen = strlen(s);
+                int pLen = strlen(p);
+                int i = 0;
+                int j = 0;
+                
+                while (i < sLen && j < pLen)
+                {
+                    // 如果 j == -1（表示重新从子串的第一位开始比较） 或者当前字符匹配成功
+                    if (j == -1 || s[i] == p[j])
+                    {
+                        i++;
+                        j++;
+                    }
+                    else
+                    {
+                        j = next[j];
+                    }
+                }
+                
+                if (j == pLen)
+                    return i - j;
+                else
+                    return -1;
+            }
+            
+            
+            void GetNext(char* p, int next[])
+            {
+                int pLen = strlen(p);
+                next[0] = -1;
+                int k = -1;
+                int j = 0;
+                
+                while (j < pLen - 1)
+                {
+                    // p[k]表示前缀，p[j]表示后缀
+                    if (k == -1 || p[j] == p[k])
+                    {
+                        ++k;
+                        ++j;
+                        next[j] = k;
+                    }
+                    else
+                    {
+                        k = next[k];
+                    }
+                }
+            }
+            
+        参考我的数据结构与算法里的详细注释[KMPSearch](https://github.com/suliutree/Data-Struct-and-Algorithm/blob/master/KMPSearch.cpp)
+            
+            
+            
+            
+            
             
             
             
