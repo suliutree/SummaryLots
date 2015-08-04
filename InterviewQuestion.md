@@ -1063,7 +1063,7 @@
             }
             
         参考我的数据结构与算法里的详细注释
-        <p><a href="https://github.com/suliutree/Data-Struct-and-Algorithm/blob/master/KMPSearch.cpp">KMPSearch</p>
+        [KMPSearch]: <https://github.com/>
             
             
             
