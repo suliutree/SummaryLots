@@ -768,3 +768,92 @@
         {
         	return inputStack.empty() && outputStack.empty(); 
         }
+
+<br>
+####28.定义一个函数，实现左旋字符串，比如输入"abcdef"和2，则函数返回的结果为"cdefab"。
+
+        void Reverse(char* pBegin, char* pEnd)
+        {
+            if (pBegin == NULL || pEnd == NULL)
+                return;
+            
+            while (pBegin < pEnd)
+            {
+                char temp = *pBegin;
+                *pBegin = *pEnd;
+                *pEnd = temp;
+                
+                pBegin++;
+                pEnd--;
+            }
+        }
+        
+        char* LeftRotate(char* pStr, int n)
+        {
+            if (pStr != NULL)
+            {
+                int length = strlen(pStr);
+                if (length > 0 && n > 0 && n < length)
+                {
+                    char* pFirstStart = pStr;
+                    char* pFirstEnd = pStr + n - 1;
+                    char* pSecondStart = pStr + n;
+                    char* pSecondEnd = pStr + length - 1;
+                    
+                    Reverse(pFirstStart, pFirstEnd);
+                    Reverse(pSecondStart, pSecondEnd);
+                    Reverse(pFirstStart, pSecondEnd);
+                }
+            }
+            return pStr;
+        }
+
+<br>
+####29.二叉树前序、中序和后序遍历的递归与非递归实现
+
+        struct BinaryTreeNode
+        {
+            int m_nValue;
+            BinaryTreeNode* m_pLeft;
+            BinaryTreeNode* m_pRight;
+        };
+        
+        前序遍历：
+        1）递归实现
+            
+            void Preorder(BinaryTreeNode* pRoot)
+            {
+                printf("%d\t", pRoot->m_nValue);
+                Preorder(pRoot->m_pLeft);
+                Preorder(pRoot->m_pRight);
+            }
+            
+        2）非递归实现
+        
+            void PreorderIteration(BinaryTreeNode* pRoot)
+            {
+                stack<BinaryTreeNode*> stack;
+                BinaryTreeNode* p = pRoot; //遍历指针
+                while (p || !stack.empty()) //栈不空或p不空时循环
+                {
+                    if (p != NULL)
+                    {
+                        stack.push(p);
+                        printf("%d\t", p->m_nValue);
+                        p = p->m_pLeft;
+                    }
+                    else
+                    {
+                        p = stack.top();
+                        stack.pop();
+                        p = p->m_pRight;
+                    }
+                }
+            }
+            
+            
+            
+            
+            
+            
+            
