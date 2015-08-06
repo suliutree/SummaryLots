@@ -1095,7 +1095,26 @@
 <br>
 33.删除模式串中出现的字符，如“welcome to asted”，模式串为“aeiou”，那么得到的字符串为“wlcm t std”，字符串全部为小写字母。
 
+        void DeleteCharacter(char* s, char* p)
+        {
+        	assert(s != NULL && p != NULL);
+        	int pLen = strlen(p);
+        	int i = 0, j = 0;
         
+        	while (s[i] != '\0')
+        	{
+        		for (int k = 0; k < pLen; ++k)
+        		{
+        			if (s[j] == p[k])
+        			{
+        				j++;
+        				k = 0;
+        			}
+        		}
+        
+        		s[i++] = s[j++];
+        	}
+        }
             
             
             
