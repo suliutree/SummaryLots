@@ -1062,9 +1062,40 @@
                 }
             }
             
+<br>
+####32.Given a newspaper and message as teo strings, check if the message can be composed using letters in the newspaper.
 
+        分析：要使newspaper中的字符能够组成message
+        首先，message中用到的字符必须出现在newspaper中；
+        其次，message中任意字符出现的次数一定少于其在newspaper中出现的次数。
+        
+        bool canCompose(string newspaper, string message)
+        {
+            if (newspaper.length() < message.length())
+                return false;
+                
+            unordered_map<char, int> hashMap;
+            int i;
             
+            for (i = 0; i < newspaper.length(); ++i)
+                hashMap[newspaper[i]]++;
+                
+            for (i = 0; i < message.length(); ++i)
+            {
+                if (hashMap.count(message[i]) == 0)
+                    return false;
+                
+                if (--hashMap[message[i]] < 0)
+                    return false;
+            }
             
+            return true;
+        }
+            
+<br>
+33.删除模式串中出现的字符，如“welcome to asted”，模式串为“aeiou”，那么得到的字符串为“wlcm t std”，字符串全部为小写字母。
+
+        
             
             
             
