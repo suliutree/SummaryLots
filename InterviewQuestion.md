@@ -1116,9 +1116,53 @@
         	}
         }
             
+<br>
+####34.在一个字符串中找到第一个只出现一次的字符。
+
+        char FirstNotRepeatingChar(char* pStr)
+        {
+            if (pStr == NULL)
+                return '\0';
+            const int tableSize = 256;
+            int hashTable[tableSize];
             
+            for (int i = 0; i < tableSize; ++i)
+                hashTable[i] = 0;
             
+            char* p = pStr;
+            while (*p != '\0')
+            {
+                hashTable[*p]++;
+                p++;
+            }
             
+            p = pStr;
+            while (*p != '\0')
+            {
+                if (hashTable[*p] == 1)
+                    return *p;
+                else
+                    p++；
+            }
+            
+            return '\0';
+        }
+            
+<br>
+####35.Determine if all characters of string are unique.
+
+        bool IsUnique(string input)
+        {
+            bitset<256> hashMap;
+            for (int i = 0; i < input.length(); ++i)
+            {
+                if (hashMap[(int)input[i]])
+                    return false;
+                
+                hashMap[(int)input[i]] = 1;
+            }
+            return true;
+        }
             
             
             
