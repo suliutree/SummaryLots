@@ -1164,8 +1164,35 @@
             return true;
         }
             
+<br>
+####36.实现一个函数，输入一个整数，输出该二进制表示中1的个数。
+
+        普通实现（循环的次数等于整数二进制的位数）：
+            int NumberOf1(int n)
+            {
+                int count = 0;
+                unsigned int flag = 1;
+                while (n)
+                {
+                    if (n & flag)
+                        count++;
+                    
+                    flag = flag << 1;
+                }
+                
+                return count;
+            }
             
-            
-            
+        最优实现（整数的二进制表示有几个1就循环几次）：
+            int NumberOf1(int n)
+            {
+                int count = 0;
+                while (n)
+                {
+                    ++count;
+                    n = n & (n-1);
+                }
+                return count;
+            }
             
             
