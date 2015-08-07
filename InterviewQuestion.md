@@ -1217,3 +1217,23 @@
             reverse_num <<= count;
             return reverse_num;
         }
+
+<br>
+####38.给定含有n个元素的整型数组a，其中包括0元素和非0元素，对数组进行排序，要求：
+1）排序后所有0元素在前，所有非零元素在后，且非零元素排序后前后位置不变；<br>
+2）不能使用额外的存储空间。
+
+        void Partition(int A[], int left, int right)
+        {
+        	int i = right + 1;
+        	for (int j = right; j >= left; --j)
+        	{
+        		if (A[j] != 0)
+        		{
+        			--i;
+        			int temp = A[j];
+        			A[j] = A[i];
+        			A[i] = temp;
+        		}
+        	}
+        }
