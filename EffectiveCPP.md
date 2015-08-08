@@ -174,5 +174,83 @@
         （不传播）或结束程序。
             如果客户需要对某个操作函数运行期间抛出的异常作出反应，那么class应该提供一个普通函数（而非在析构函数中）执行
         该操作。
+ 
+<br>
+####条款9：绝不在构造和析构过程中调用virtual函数
+
+            Base class构造期间virtual函数绝对不会下降到derived classes阶层。取而代之的是，对象的作为就像隶属base类型一样。
+        也就是说，在base classes构造期间，virtual函数不是virtual函数。
+            根本原因是，在derived class对象的base class构造期间，对象的类型是base class而不是derived class。
+            相同的道理也适用于析构函数。
+            
+        请记住：
+            在构造和析构期间不要调用virtual函数，因为这类调用从不降至derived class（比起当前执行构造函数和析构函数的那层）。
+
+<br>
+####10.令operator=返回一个reference to *this
+
+        赋值可以写成连锁形式：
+        x = y = z = 15;
+        赋值采用右结合律：
+        x = (y = (z = 15));
+        为了实现“连续赋值"，赋值操作符必须返回一个reference指向操作符的左侧实参。这是你为classes实现赋值操作时应该遵循
+        的协议：
+        例：
+            class Widget {
+            public:
+                ...
+                Widget& operator=(const Widget& rhs) //返回类型是个reference，指向当前对象
+                {
+                    ...
+                    return *this; //返回左侧对象
+                }
+                ...
+            };
+            这个协议不仅适用于以上的标准赋值形式，也适用于所有赋值相关运算，如“+=、-=、*=”等。
+            
+            请记住：
+                令赋值（assignment）操作符返回一个reference to *this。
         
+<br>
+####12.复制对象时勿忘其每一个成分
+
+            设计良好的面向对象系统会将对象内部封装起来，只留两个函数负责对象拷贝（复制），那便是copy构造函数和copy assignment
+        操作符，我称为copying函数。
+            任何时候只要你承担起“为derived class撰写copying函数”的重大责任，必须很小心的也复制其base class成分。
+            
+        例：
+            class Customer {
+            ...
+            };
+            
+            public PriorityCustomer: public Customer {
+            public:
+                PriorityCustomer(const PriorityCustomer& rhs);
+                PriorityCustomer& operator=(const PriorityCustomer& rhs);
+                ...
+            private:
+                int priority;
+            };
+            
+            PriorityCustomer::PriorityCustomer(const PriorityCustomer& rhs)
+            : Customer(rhs), priority(rhs.priority)
+            {
+            }
+            
+            PriorityCustomer& PriorityCustomer::operator=(const PriorityCustomer& rhs)
+            {
+                Customer::operator=(rhs);
+                priority = rhs.priority;
+                return *this;
+            }
+            
+        当你编写一个copying函数，请确保
+        1）复制所有的local成员变量；
+        2）调用所有base classes内的适当的copying函数。
         
+        请记住：
+            copying函数应该确保复制“对象内的所有成员变量”及“所有base class成分”。
+            不要尝试以某个copying函数实现另一个copying函数。应该讲=将共同机能放进第三个函数中（通常叫init），并由两个
+        copying函数共同调用。
+            
+            
