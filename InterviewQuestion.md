@@ -1237,3 +1237,39 @@
         		}
         	}
         }
+
+<br>
+####39.在同一个文件中，当局部变量屏蔽了全局变量，而又想要使用全局变量，怎么做？
+
+        有两种方法：
+        1）使用作用域操作符“::”
+        2）使用“extern”
+        
+        例子：
+        以下代码的输出结果是多少？
+            int count = 3;
+            int main()
+            {
+            	int i, sum, count = 2;
+            
+            	for (i = 0, sum = 0; i < count; i += 2, count++)
+            	{
+            		static int count = 4; // 只初始化一次
+            		count++;
+            
+            		if (i % 2 == 0)
+            		{
+            			extern int count;
+            			count++;
+            			sum += count;
+            		}
+            		sum += count;
+            	}
+            
+            	printf("%d %d\n", count, sum);
+            	return 0;
+            }
+            
+            答案：4 20。
+            解析：for循环判断条件的count是main下第一行的count，for循环里面的count是static的count，if语句里的count是main
+            外部的count（extern int count语句的作用）。
