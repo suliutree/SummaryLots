@@ -924,7 +924,7 @@
                         {
                             p = p->m_pRight;
                             stack.push(p);
-                            p = p->m_pRight;
+                            p = p->m_pLeft;
                         }
                         else
                         {
