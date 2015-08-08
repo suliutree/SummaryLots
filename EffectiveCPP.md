@@ -133,5 +133,46 @@
         为驳回编译器自动 （暗自）提供的机能， 可将相应的成员函数声明为private并且不予实现。 使用像Uncopyable这样的base
         class （见P39）也是一种做法。
         
+<br>
+####条款07：为多态基类声明virtual析构函数
+
+        C++明白指出，当derived class对象经由一个base class指针被删除，而该base class带这一个non-virtual析构函数，其结果
+        未有定义——实际执行时通常是对象的derived成分没被销毁。
+        任何class只要带有virtual函数都几乎确定应该也有一个virtual析构函数。如果class不含virtual函数，通常表示它并不意图
+        被用作一个base class。当class不企图被当做base class，令其析构函数为virtual往往是个馊主意，因为这样会增加其对象的
+        大小。
+        如果希望让一个类成为抽象基类，你应该为它声明一个pure virtual析构函数。
+        例如：
+            class AWOV {
+            public:
+                virtual ~AWOV() = 0;
+            };
+        这个class有一个pure class函数，所以它是个抽象class，又由于它有个virtual析构函数，所以你不需要担心析构函数的问题。
+        然而这里有个窍门：你必须为这个pure virtual析构函数提供一份定义：
+            AWOV::~AWOV() {}        //pure virtual析构函数的定义
+        析构函数的运作方式是最深层派生的那个class其析构函数最先被调用，然后是其每一个base class的析构函数被调用。编译器
+        会在AWOV的derived classes的析构函数中创建一个对~AWOV的调用动作，所以你必须为这个函数提供一份定义。如果不这样做，
+        连接器会发出抱怨。
+            “给base classes一个virtual析构函数”，这个规则只适用于带多态性质的base class身上。这种base classes的设计目的
+        是为了用来“通过base class接口处理derived class 对象”。
+            并非所有base class的设计目的都是为了多态用途。例如标准string和STL容器都不被设计作为base classes使用，更别提
+        多态了。某些classes设计的目的是作为base classes使用，但不是为了多态用途。
+        
+        请记住：
+            polymorphic（带多态性质的）base classes应该声明一个virtual析构函数。如果class带有任何virtual函数，它就应该拥
+        有一个virtual析构函数。
+            classes的设计目的如果不是作为base classes使用，或不是为了具备多态性，就不该声明virtual析构函数。
+        
+<br>
+####条款8：别让异常逃离析构函数
+
+            C++并不禁止析构函数吐出异常，但它不鼓励你这样做。如果某个操作可能在失败是抛出异常，而又存在某种需要必须处理
+        该异常，难么这个异常必须来自析构函数以外的某个函数。
+        
+        请记住：
+            析构函数绝对不要吐出异常。如果一个被析构函数调用的函数可能抛出异常，析构函数应该捕捉任何异常，然后吞下他们
+        （不传播）或结束程序。
+            如果客户需要对某个操作函数运行期间抛出的异常作出反应，那么class应该提供一个普通函数（而非在析构函数中）执行
+        该操作。
         
         
