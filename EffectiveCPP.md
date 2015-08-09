@@ -130,8 +130,8 @@
         将copy构造函数或copy assignment操作符声明为private。
         
         请记住：
-        为驳回编译器自动 （暗自）提供的机能， 可将相应的成员函数声明为private并且不予实现。 使用像Uncopyable这样的base
-        class （见P39）也是一种做法。
+            ● 为驳回编译器自动 （暗自）提供的机能， 可将相应的成员函数声明为private并且不予实现。 使用像Uncopyable这样
+        的base class（见P39）也是一种做法。
         
 <br>
 ####条款07：为多态基类声明virtual析构函数
@@ -159,9 +159,9 @@
         多态了。某些classes设计的目的是作为base classes使用，但不是为了多态用途。
         
         请记住：
-            polymorphic（带多态性质的）base classes应该声明一个virtual析构函数。如果class带有任何virtual函数，它就应该拥
+            ● polymorphic（带多态性质的）base classes应该声明一个virtual析构函数。如果class带有任何virtual函数，它就应该拥
         有一个virtual析构函数。
-            classes的设计目的如果不是作为base classes使用，或不是为了具备多态性，就不该声明virtual析构函数。
+            ● classes的设计目的如果不是作为base classes使用，或不是为了具备多态性，就不该声明virtual析构函数。
         
 <br>
 ####条款8：别让异常逃离析构函数
@@ -170,9 +170,9 @@
         该异常，难么这个异常必须来自析构函数以外的某个函数。
         
         请记住：
-            析构函数绝对不要吐出异常。如果一个被析构函数调用的函数可能抛出异常，析构函数应该捕捉任何异常，然后吞下他们
+            ● 析构函数绝对不要吐出异常。如果一个被析构函数调用的函数可能抛出异常，析构函数应该捕捉任何异常，然后吞下他们
         （不传播）或结束程序。
-            如果客户需要对某个操作函数运行期间抛出的异常作出反应，那么class应该提供一个普通函数（而非在析构函数中）执行
+            ● 如果客户需要对某个操作函数运行期间抛出的异常作出反应，那么class应该提供一个普通函数（而非在析构函数中）执行
         该操作。
  
 <br>
@@ -184,7 +184,8 @@
             相同的道理也适用于析构函数。
             
         请记住：
-            在构造和析构期间不要调用virtual函数，因为这类调用从不降至derived class（比起当前执行构造函数和析构函数的那层）。
+            ● 在构造和析构期间不要调用virtual函数，因为这类调用从不降至derived class（比起当前执行构造函数和析构函数的那
+        层）。
 
 <br>
 ####10.令operator=返回一个reference to *this
@@ -209,7 +210,7 @@
             这个协议不仅适用于以上的标准赋值形式，也适用于所有赋值相关运算，如“+=、-=、*=”等。
             
             请记住：
-                令赋值（assignment）操作符返回一个reference to *this。
+                ● 令赋值（assignment）操作符返回一个reference to *this。
         
 <br>
 ####12.复制对象时勿忘其每一个成分
@@ -249,8 +250,8 @@
         2）调用所有base classes内的适当的copying函数。
         
         请记住：
-            copying函数应该确保复制“对象内的所有成员变量”及“所有base class成分”。
-            不要尝试以某个copying函数实现另一个copying函数。应该讲=将共同机能放进第三个函数中（通常叫init），并由两个
+            ● copying函数应该确保复制“对象内的所有成员变量”及“所有base class成分”。
+            ● 不要尝试以某个copying函数实现另一个copying函数。应该讲=将共同机能放进第三个函数中（通常叫init），并由两个
         copying函数共同调用。
             
 <br>
@@ -284,8 +285,8 @@
             为避免此类错误，最好尽量不要对数组形式做typedef动作。
             
         请记住：
-                如果你调用new时使用了[]，你必须在调用对应delete时也使用[]。如果你调用new时没有使用[]，那么
-        也不该对应调用delete时使用[]。
+                ● 如果你调用new时使用了[]，你必须在调用对应delete时也使用[]。如果你调用new时没有使用[]，那么也不该对应
+            调用delete时使用[]。
         
 <br>
 ####条款20.宁以 pass-by-reference-to-const替换pass-by-value
@@ -304,8 +305,8 @@
             一般而言，你可以合理假设“pass-by-value并不昂贵”的唯一对象就是内置类型和STL的迭代器和函数对象。
         
         请记住：
-            尽量以pass-by-reference-to-const替换pass-by-value。前者通常比较高效，并可避免切割问题。
-            以上规则并不适用内置类型，以及STL的迭代器和函数对象。对它们而言，pass-by-value往往比较适当。
+            ● 尽量以pass-by-reference-to-const替换pass-by-value。前者通常比较高效，并可避免切割问题。
+            ● 以上规则并不适用内置类型，以及STL的迭代器和函数对象。对它们而言，pass-by-value往往比较适当。
             
 <br>
 ####条款26.尽量延后变量定义式出现的时间
@@ -336,9 +337,183 @@
         本比“构造+析构”成本低，（2）你正在处理代码中效率高度敏感的部分，否则你应该使用做法B。
         
         请记住：
-            尽可能延后变量定义式的出现。这样做可增加程序的清晰度并改善程序效率。
+            ● 尽可能延后变量定义式的出现。这样做可增加程序的清晰度并改善程序效率。
             
+<br>
+####条款30：透彻了解inlining的里里外外
+
+            inline只是对编译器的一个申请，不是强制命令。
+            inline函数通常一定被置于头文件内，因为大多数建置环境（build environments）在编译过程中进行inlining，而为了将
+        一个“函数调用”替换为“被调用函数的本体”，编译器必须知道那个函数长什么样子。
+            Templates通常也被置于头文件内，因为它一旦被使用，编译器为了将它具现化，需要知道它长什么样子。（某些建置环境
+        可以再连接期才执行template具现化）
+            大部分编译器拒绝将太复杂（例如带循环或递归）的函数inlining，而所有对virtual函数的调用（除非是最平淡无奇的）也
+        都会使inlining落空。因为virtual意味“等待，直到运行期才确定调用哪个函数”，而inline意味“执行前，先将调用动作替换为
+        被调用函数的本体”。
+            如果程序要取某个inline函数的地址，编译器通常必须为此函数生成一个outlined函数本体，毕竟编译器不可能提出一个指针
+        指向并不存在的函数。与此并提的是，编译器通常不对“通过函数指针而进行的调用”实施inlining，者意味着对inlining函数的调
+        用有可能被inlined，也可能不被inlined，取决于该调用的实施方式。
+        例：
+            inline void f() {...} //假设编译器有意愿inline“对f的调用”
+            void (*pf)() = f; //pf指向f
+            ...
+            f(); //这个调用将被inlined，因为它是一个正常的调用。
+            pf(); //这个调用或许不被inlined，因为它通过函数指针达成。
             
+            实际上构造函数和析构函数往往是inlining的糟糕候选人，因为编译器在编译期间会安插一些代码到程序中。
+            程序库设计者必须评估“将函数声明为inline”的冲击：inline函数无法随着程序库的升级而升级。一旦一个inline函数被修改，
+        所有用到此函数的程序都必须被重新编译。但对于non-inline函数，一旦它有任何修改，只需重新连接就好。
+            若从纯粹实用观点出发，有一个事实比其他因素更重要：大部分调试器面对inline函数都束手无策。毕竟你如何在一个并不存
+        在的函数内设立断点呢？
+        
+        请记住:
+            ● 将大多数inlining限制在小型，被频繁调用的函数身上。这可使日后的调试过程和二进制升级更容易，也可使潜在的代码膨胀
+        问题最小化，使程序速度提升机会最大化。
+            ● 不要只因为function templates出现在头文件，就将它们声明为inline。
+        
+<br>
+####条款33：避免遮掩继承而来的名称
+
+            C++名称遮掩规则（name-hiding rules）所做的唯一的事情就是：遮掩名称。
+            对于继承来说，derived class作用域被嵌套在base class作用域内。
+        例：
+            class Base{
+            private:
+                int x;
+            public:
+                virtual void mf1() = 0;
+                virtual void mf1(int);
+                virtual void mf2();
+                void mf3();
+                void mf3(double);
+                ...
+            };
+            
+            class Derived: public Base {
+            public:
+                virtual void mf1();
+                void mf3();
+                void mf4();
+                ...
+            };
+            以作用域为基础的“名称掩盖规则”并没有改变，因此base class内所有名为mf1和mf3的函数都被derived class内的mf1
+        和mf3函数遮掩掉了。
+            Dervied d;
+            int x;
+            ...
+            d.mf1(); //没问题，调用Dervied::mf1
+            d.mf1(x); //错误！因为Derived:mf1遮掩了Base::mf1
+            d.mf2(); //没问题，调用Base::mf2
+            d.mf3(); //没问题，调用Derived::mf3
+            d.mf3(x); //错误！因为Derived::mf3遮掩了Base::mf3
+            如你所见，上述规则都适用，即使base classes和derived classes内的函数有不同的参数类型也适用，而且不论函数
+        是virtual或non-virtual一体适用。
+            不幸的是你通常会想继承重载函数。实际上如果你正在使用public继承而又不继承那些重载函数，就是违反base和
+        derived class之间的is-a关系，而条款32说过is-a是public继承的基石。
+            你可以使用using声明达成目标：
+            class Base {
+            private:
+                int x;
+            public:
+                virtual void mf1() = 0;
+                virtual void mf1(int);
+                virtual void mf2();
+                void mf3();
+                void mf3(double);
+                ...
+            };
+            
+            class Derived: public Base {
+            public:
+                using Base::mf1; //让Base class内名为mf1和mf3的所有东西
+                using Base::mf3; //在Derived作用域内都可见（并且public）
+                virtual void mf1();
+                void mf3();
+                void mf4();
+                ...
+            };
+            现在继承机制将一如既往地运作：
+            Derived d;
+            int x;
+            ...
+            d.mf1(); //仍然没问题，调用Derived::mf1
+            d.mf1(x); //现在没问题，调用Derived::mf1
+            d.mf2(); //仍然没问题，调用Base::mf2
+            d.mf3(); //没问题，调用Derived::mf3
+            d.mf3(x); //现在没问题，调用Derived::mf3
+            这意味着如果比继承base classes并加上重载函数，而你又希望重新定义或覆写（推翻）其中一部分，那么你必须为那些
+        原本会被遮掩的每个名称引入一个using声明，否则某些你希望继承的名称会被遮掩。
+        
+        请记住：
+            ● derived classes内的名称会遮掩base classes内的名称。在public继承下从来没有人希望如此。
+            ● 为了让被遮掩的名称再见天日，可使用using声明式或转交函数（forwarding functions）。
+
+<br>
+####条款36：绝不重新定义继承而来的non-virtual函数
+
+        例：
+            Base B {
+            public:
+                void mf();
+            ...
+            };
+            
+            class D: public B {
+            public:
+                void mf();
+            ...
+            };
+            
+            D x;
+            B* pB = &x; //获得一个指针指向x
+            D* pD = &x; //获得另一个指针指向x
+            pB->mf(); //调用B::mf
+            pD->mf(); //调用D::mf
+            你可能会相当惊讶，毕竟两者都通过对象x调用成员函数mf。造成这种两面行为的原因是，non-virtual函数如B::mf和D::mf
+        都是静态绑定。这意味着通过pB调用的non-virtual函数永远是B所定义的版本，即使pB指向一个类型为“B派生之class”的对象。
+            但另一方面，virtual函数却是动态绑定。如果mf是个virtual函数，不论是通过pB或pD调用mf，都会导致调用D::mf，因为
+        pB和pD真正指的都是一个类型为D的对象。
+        
+<br>
+####条款37：绝不重新定义继承而来的缺省参数值
+
+            既然重新定义一个继承而来的 non-virtual函数永远是错误的，所以我们将本条款局限于“继承一个带有缺省参数值的
+        virtual函数”。
+            对象所谓的静态类型（static type），就是它在程序中被声明时所采用的类型。
+        例：
+            class Shape {
+            public:
+                enum ShapeColor {Red, Green, Blue};
+                virtual void draw(ShapeColor color = Red) const = 0;
+            ...
+            };
+            
+            class Rectangle: public Shape {
+            public:
+                //注意，赋予不同的缺省参数值。这真糟糕！
+                virtual void draw(ShaperColor color = Green) const;
+            ...
+            };
+            
+        现在考虑这些指针：
+            Shape* ps; //静态类型为Shape*
+            Shape* pr = new Rectangle; //静态类型为Shaper*
+            本例中ps和pr都被声明为pointer-to-Shape类型，所以它们都以它为静态类型。不论它们真正指向什么，它们的静态类型
+        都是Shape*。
+            对象的所谓动态类型则是指“目前所指对象的类型”。也就是说，动态类型可以表现出一个对象将会有什么行为。以上例而
+        言，pr动态类型是Rectangle*，ps没有动态类型，因为它尚未指向任何对象。
+            virtual函数系动态绑定而来，意思是调用一个virtual函数时，究竟调用哪一份函数实现代码，取决于发出调用的那个对
+        象的动态类型：
+            pr->draw(Shape::Red); //调用Rectangle::draw(Shape::Red)
+            virtual函数是动态绑定，而缺省参数值却是静态绑定的。意思是你可能会在“调用一个定义于derived class内的virtual
+        函数”的同时，却使用base class为它所指定的缺省参数值：
+            pr->draw(); 调用Rectangle::draw(Shape::Red)!
+        
+        请记住：
+            ● 绝对不要重新定义一个继承而来的缺省参数值，因为缺省参数值都是静态绑定，而virtual函数——你唯一应该覆写的东西
+        ——却是动态绑定的。
+        
+        
             
             
             
