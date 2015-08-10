@@ -44,7 +44,8 @@
         const double CostEstimate::FudgeFactor = 1.35; //static class 常量定义， 位于实现文件中
         
         一个例外是当你在class编译期间需要一个class常量值， 例如上面的GamePlayer::scores的数组声明式中（编译器坚持必
-        须在编译期间知道数组的大小） 。这时候万一你的编译器不允许 “static整数型class常量” 完成 “in class 初值设定” ，                 可改为所谓的 “the enum hack” 补偿做法。其理论基础是： “一个属于枚举类型（enumerated type） 的数值可权充int被
+        须在编译期间知道数组的大小） 。这时候万一你的编译器不允许 “static整数型class常量” 完成 “in class 初值设定”,
+        可改为所谓的 “the enum hack” 补偿做法。其理论基础是： “一个属于枚举类型（enumerated type） 的数值可权充int被
         使用” ，于是GamePlayer可定义如下：
         class GamePlayer{
         private:
@@ -513,10 +514,100 @@
             ● 绝对不要重新定义一个继承而来的缺省参数值，因为缺省参数值都是静态绑定，而virtual函数——你唯一应该覆写的东西
         ——却是动态绑定的。
         
+<br>
+####条款40：明智而审慎的使用多继承
+
+            使用virtual继承的那些classes所产生的对象往往比使用non_virtual继承的兄弟们体积大，访问virtual base classes
+        的成员变量时，也比访问non-virtual base classes的成员变量速度慢。总之，你得为virtual继承付出代价。
+            支持“virtual base classes 初始化”的规则比起non-virtual basees的情况远为复杂且不直观。virtual base的初始化
+        责任是由继承体系中的最低层（most derived） class负责，中间层classes对其virtual bases的初始化都将被屏蔽。也就是
+        说当一个新的derived class加入到继承体系的底层时，它必须承担其virtual bases（不论是直接还是间接）的初始化责任。
+            在产生一个新的derived class对象时，所有virtual bases的构造函数总是先于所有non-virtual bases的构造函数被调
+        用。
+            我对virtual base classes（亦相当于对virtual继承）的忠告是：
+            1.非必要不使用virtual base。
+            2.如果你必须使用virtual base classes，尽可能避免在其中放置数据。
+            如果你有个单一继承的设计方案，而它大约等价于一个多重继承的方案，那么但以继承的设计方案一定比较受欢迎。
         
+        请记住：
+            ● 多重继承比单一继承复杂。它可能导致歧义性，以及对virtual继承的需要。
+            ● virtual继承会增加大小、速度、初始化（及赋值）复杂度等等成本。如果virtual base classes不带任何数据，将是
+        最具使用价值的情况。
+            ● 多重继承的确有正当用途。其中一个情节涉及“public继承某个Interface class”和“private继承某个协助实现的class”
+        的两相组合。
+
+<br>
+####条款42：了解typename的双重意义
+
+            声明template参数时，不论使用关键字class或typename，意义完全相同。下面两个template声明式完全相同：
+            template<class T> class Widget;
+            template<typename T> class Widget;
+            template内出现的名称如果相依于某个template参数，称之为从属名称（dependent names）。如果从属名称在class内呈
+        嵌套状，我们称它为嵌套从属名称（nested dependent name）。
+            嵌套从属名称肯能导致解析困难。
+        例：
+            template<typename C>
+            void print2nd(const C& container)
+            {
+                C::const_iterator* x;
+                ...
+            }
+            看起来好像我们声明x为一个local变量，它是个指针，指向一个C::const iterator。 但它之所以被那么认为， 只因为我
+        们 “已经知道” C::const iterator是个类型。 如果C::const iterator不是个类型呢？如果C有个static成员变量而碰巧被命
+        名为const iterator，或如果x碰巧是个global变量名称呢？那样的话上述代码就不再是声明一个local变量，而是一个相乘动
+        作：C::const iterator乘以x。
+            C++有个规则可以解析此一歧义状态：如果解析器在template中遭遇一个嵌套从属名称，它便假设这名称不是个类型，除非
+        你告诉它是。所以缺省情况下嵌套从属名称不是个类型。此规则有个例外，稍后我会提到。所以下面的C++代码不是有效的：
+            template<typename C> //这是无效的C++代码
+            void print2nd(const C& container)
+            {
+                if (container.size() >= 2) {
+                    C::const_iterator iter(container.begin()); //这个名称被假设为非类型
+                    ...
+                }
+            }
             
-            
-            
+            iter声明式只有在C::const_iterator是个类型时才合理，但我们并没有告诉C++说它是，于是C++假设它不是。所以我们
+        必须告诉C++说C::const_iterator是个类型。只要紧邻它之前放置关键字typename即可：
+            template<typename C> //这是合法的C++代码
+            void print2nd(const C& container)
+            {
+                if (container.size() >= 2) {
+                    typename C::const_iterator iter(container.begin());
+                    ...
+                }
+            }
+            typename只被用来验明嵌套从属类型名称；其他名称不该用它。
+            “typename必须作为嵌套从属类型名称的前缀词”这一规则的例外是，typename不可以出现在base classes list内的嵌套
+        从属类型名称之前，也不可在member initialization list（成员初值列）中作为base class修饰符。例如：
+            template<typename T>
+            class Derived: public Base<Y>::Nested { //base class list中不允许“typename”。
+            public:
+                explicit Derived(int x)
+                : Base<T>::Nested(x) //mem.init.list中不允许“typename”。
+                {
+                    typename Base<T>::Nested temp; //嵌套从属类型名称，作为一个base class修饰符需加上typename。
+                }
+            }
+        
+        请记住：
+            ● 声明template参数时，前缀关键字class和typename可互换。
+            ● 请使用关键字typename表示嵌套从属名称；但不得在base class list（基类列）或member initialization liat（成
+        员初值列）内以它作为base class的修饰符。
+
+<br>条款44：将与参数无关的代码抽离templates
+
+            在大多数平台上，所有指针类型都有相同的二进制表述，因此凡templates持有指针者（例如list<int*>, list<const int*>
+        等等）往往应该对每一个成员函数使用唯一一份底层实现。这很具代表性的意味，如果你实现某些成员函数而它们操作强型
+        指针（strongly type pointers，即T*），你应该令它们调用另一个操作无类型指针（untyped pointers，即void*）的函数，
+        由后者完成实际工作。
+        
+        请记住：
+            ● Templates生成多个classes和多个函数，所以任何template代码都不该与某个造成膨胀的template参数产生相依关系。
+            ● 因非类型模板参数（non-type template parameters）而造成的代码膨胀，往往可消除，做法是以函数参数或class成
+        员变量替换template参数。
+            ● 因类型参数（type parameters）而造成的代码膨胀，往往可降低，做法是让带有完全相同二进制表述（binary 
+        representations）的具现类型（instantiation types）共享实现码。
             
             
         
