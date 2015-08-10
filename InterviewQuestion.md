@@ -1273,3 +1273,35 @@
             答案：4 20。
             解析：for循环判断条件的count是main下第一行的count，for循环里面的count是static的count，if语句里的count是main
             外部的count（extern int count语句的作用）。
+
+<br>
+####40.合并两个已排序的链表
+
+        struct ListNode 
+        {
+            int m_nValue;
+            ListNode* m_pNext;
+        };
+        
+        ListNode* Merge(ListNode* pHead1, ListNode* pHead2)
+        {
+            if (pHead1 == NULL)
+                return pHead2;
+            else if (pHead2 == NULL)
+                return pHead1;
+            
+            ListNode* pMergeHead = NULL;
+            
+            if (pHead1->m_nValue <= pHead2->m_nValue)
+            {
+                pMergeHead = pHead1;
+                pMergeHead = Merge(pHead1->m_pNext, pHead2);
+            }
+            else
+            {
+                pMergeHead = pHead2;
+                pMergeHead = Merge(pHead1, pHead2->m_pNext);
+            }
+            
+            return pMergeHead;
+        }
