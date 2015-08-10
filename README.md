@@ -1,14 +1,16 @@
 # SummaryLots
 计算机基础知识总结
 
-[C/C++](./BasicCPP.md)
+1.[C/C++](./BasicCPP.md)
 <br>
-[STL](./STL.md)
+2.[STL](./STL.md)
 <br>
-[操作系统](./OS.md)
+3.[Effective C++](./EffectiveCPP.md)
 <br>
-[计算机网络](./Networking.md)
+4.[操作系统](./OS.md)
 <br>
-[程序员面试](./InterviewQuestion)
+5.[计算机网络](./Networking.md)
 <br>
-[有用的建议](./SeeHeart.md)
+6.[程序员面试](./InterviewQuestion)
+<br>
+7.[有用的建议](./SeeHeart.md)
