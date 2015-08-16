@@ -90,7 +90,7 @@
                 int id;
                 char name[NAME_SIZE];
         public:
-                virtual aboutMe() {
+                virtual void aboutMe() {
                         cout << "I am a person.";
                 }
                 
