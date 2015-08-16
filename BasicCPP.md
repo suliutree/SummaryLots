@@ -117,7 +117,7 @@
         虚析构函数：
                 class Person {
                 public:
-                        ~Person() {
+                        virtual ~Person() {
                                 cout << "Deleteing a person." << endl;
                         }
                 };
