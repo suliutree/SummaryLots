@@ -137,7 +137,7 @@
                 Deleting a person.
         
         虚函数工作原理：
-                虚函数需要虚函数表（Virtual Table）才能实现。如果一个类有函数声明称虚拟的，就会生成一个vtable，存放
+                虚函数需要虚函数表（Virtual Table）才能实现。如果一个类有函数声明成虚拟的，就会生成一个vtable，存放
                 这个类的虚函数地址。此外，编译器还会在类里加入隐藏的vptr变量（虚函数指针）。若子类没有覆写虚函数，该
                 子类的vtable就会存放父类的函数地址。调用这个虚函数时，就会通过vtable解析函数的地址。
                 在C++里，动态绑定就是通过vtable机制实现的。
@@ -450,7 +450,7 @@
 <br>
 ####为CMyString类中各函数补齐函数体
 
-        class MyString
+        class CMyString
         {
         public:
                 CMyString(const char* pData = NULL);
