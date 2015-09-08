@@ -13,6 +13,6 @@
 <br>
 6.[笔试面试题](./InterviewQuestion.md)
 <br>
-7.[经典面试题](./ClassicsInterview)
+7.[经典面试题](./ClassicsInterview.md)
 <br>
 8.[有用的建议](./SeeHeart.md)
