@@ -189,7 +189,7 @@
         层）。
 
 <br>
-####10.令operator=返回一个reference to *this
+####条款10.令operator=返回一个reference to *this
 
         赋值可以写成连锁形式：
         x = y = z = 15;
@@ -214,7 +214,7 @@
                 ● 令赋值（assignment）操作符返回一个reference to *this。
         
 <br>
-####12.复制对象时勿忘其每一个成分
+####条款12.复制对象时勿忘其每一个成分
 
             设计良好的面向对象系统会将对象内部封装起来，只留两个函数负责对象拷贝（复制），那便是copy构造函数和copy assignment
         操作符，我称为copying函数。
@@ -595,7 +595,9 @@
             ● 请使用关键字typename表示嵌套从属名称；但不得在base class list（基类列）或member initialization liat（成
         员初值列）内以它作为base class的修饰符。
 
-<br>条款44：将与参数无关的代码抽离templates
+
+<br>
+####条款44：将与参数无关的代码抽离templates
 
             在大多数平台上，所有指针类型都有相同的二进制表述，因此凡templates持有指针者（例如list<int*>, list<const int*>
         等等）往往应该对每一个成员函数使用唯一一份底层实现。这很具代表性的意味，如果你实现某些成员函数而它们操作强型
