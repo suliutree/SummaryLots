@@ -236,6 +236,13 @@
         multiset提供如下接口：
         iterator insert(const value_type& elem);
         iterator insert(iterator pos_hint, const value_type& elem);
+        
+        example
+        using C++ 11:
+            std::set<std::string> str = {"John", "Kelly", "Amanda", "Kim"};
+        Otherwise:
+            std::string tmp[] = {"John", "Kelly", "Amanda", "Kim"};
+            std::set<std::string> str(tmp, tmp + sizeof(tmp) / sizeof(tmp[0]));
 
 
 <br>
