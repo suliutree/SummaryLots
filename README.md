@@ -16,3 +16,5 @@
 7.[经典面试题](./ClassicsInterview.md)
 <br>
 8.[有用的建议](./SeeHeart.md)
+<br>
+9.[遇到的一些问题的解决方法](./SomeProblemSolution.md)
