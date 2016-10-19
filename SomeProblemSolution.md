@@ -43,7 +43,9 @@
     目标文件名：看整个项目是如何定义其名称（比如GGP中debug就是$(projectName)d，release中是$(projectName)）
     导入库：正确的设置导入库，否则会出现无法打开文件“projectName.lib”的错误
     预处理器：在预处理器的定义中添加该项目的导出 “***_EXPORTS”
-    附加库目录：把需要用到的第三方库之类的（放到合适的位置）设置成相对路径，一般写法是这样的：
+    附加库目录：把需要用到的第三方库之类的（放到合适的位置）设置成相对路径，
+    
+    附加库目录的一般写法是这样的：
     ..\..\Lib\$(platform)\$(configuration) // 这里platform表示win32和x64，configuration表示Debug和Release
 
 <br>
