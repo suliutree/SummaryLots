@@ -1,23 +1,23 @@
 <br>
-std::string to std::wstring
+####std::string to std::wstring
 
     string str = "hello world";<br>
     wstring wstr (str.begin(), str.end());
 
 <br>
-char* to std::wstring
+####char* to std::wstring
   
     char* str = "hello worlddd";<br>
     wstring wstr (str, str+strlen(str));
 
 <br>  
-std::string to wchar_t*
+####std::string to wchar_t*
 
     std::wstring widestr = std::wstring(str.begin(), str.end());<br>
     wchar_t* widecstr = widestr.c_str();
 
 <br>
- visual studio中自己常用快捷键 
+####visual studio中自己常用快捷键 
 
     Shift + Alt + o 查找文件
     Ctrl + - 让光标移动到先前的位置
@@ -32,12 +32,12 @@ std::string to wchar_t*
     Shift + F10 调试过程中跳出当前函数
 
 <br>
-SVN
+####SVN
 
     通过SVN Blame可以看到每行代码具体是谁提交的
     
 <br>
-创建DLL需要注意的一些问题
+####创建DLL需要注意的一些问题
 
     输出目录：与需要使用这个dll项目的输出目录是否相同
     目标文件名：看整个项目是如何定义其名称（比如GGP中debug就是$(projectName)d，release中是$(projectName)）
@@ -47,9 +47,10 @@ SVN
     ..\..\Lib\$(platform)\$(configuration) // 这里platform表示win32和x64，configuration表示Debug和Release
 
 <br>
-预定义处理
+####预定义处理
 
     如果项目是一个DLL，那么在ProjectNme.h中一般会有预定义处理
+    
         #ifdef PROJECTNAME_EXPORTS
             #ifndef PROJECTNAME_PUBLIC
             #define PROJECTNAME_PUBLIC    __declspec(dllexport)
