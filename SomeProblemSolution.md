@@ -76,5 +76,17 @@
 
     在父类中增加一个虚函数，给一个空实现，这样就不会影响其他从该类继承的子类，然后在子类中重写该虚函数，内容为析构自身的成员变量。这样在父类的具体函数中调用该虚函数就能够析构子类成员变量所分配的内存。
     
+<br>
+####判断父类所指向的对象是否是某子类，可以将父类转换成某子类，判断其是否为空
 
+        CVisualNode *pVNode = const_cast<CVisualNode *>(pVisualNode);
+        CAxisLabel *pAxisLabel = dynamic_cast<CAxisLabel *>(pVNode);
+        if (pAxisLabel != nullptr)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
   
