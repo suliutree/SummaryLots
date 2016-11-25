@@ -94,4 +94,10 @@
         {
             return false;
         }
-  
+
+<br>
+####vs2010中各类文件的作用
+
+    vcxproj文件：工程文件，其中描述了工程的各项属性，修改该文件后再重新build时vs会重新build工程
+    vcxproj.filter文件：可理解为视图文件，定义了工程在VS中打开后的目录结构，修改该文件后重新build时vs不会重新build工程
+    vcxproj.user 是用户的一些相关配置
