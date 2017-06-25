@@ -317,3 +317,5 @@ void writemp4_release(AVOutputFormat* fmt, AVFormatContext* oc, AVStream* video_
 }; 
 
 http://www.pudn.com/Download/item/id/285939.html
+
+FFmpeg-encode-example
