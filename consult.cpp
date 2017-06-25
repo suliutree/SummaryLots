@@ -315,3 +315,5 @@ void writemp4_release(AVOutputFormat* fmt, AVFormatContext* oc, AVStream* video_
     /* free the stream */   
     av_free(oc);   
 }; 
+
+http://www.pudn.com/Download/item/id/285939.html
