@@ -25,7 +25,7 @@
 
     Shift + Alt + o 查找文件
     Ctrl + - 让光标移动到先前的位置
-    Ctrl + + 让光标移动到下一个位置
+    Ctrl + Shift + - 让光标移动到下一个位置
     Alt + O .h文件与相应的.cpp文件的跳转
     Ctrl + } 匹配大括号
     Ctrl + Shift + } 选中匹配的括号内的文本
