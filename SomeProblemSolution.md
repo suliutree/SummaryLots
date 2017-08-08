@@ -146,7 +146,11 @@
 #### glPushMatrix() glPopMatrix()
 
     将本次需要执行的缩放、平移等操作放在glPushMatrix和glPopMatrix之间，配对使用可以消除上一次的变换对本次的影响，使本次变换是以世界坐标系的原点为参考点进行。
+    <br>
     1）OpenGL中的ModelView矩阵变换是一个马尔科夫过程：上一次的变换结果对本次变换有影响，上次ModelView变换后物体在世界坐标系下的位置是本次ModelView变换的起点(本次变换应该是以世界坐标系的原点进行)。默认时本次变换和上次变换不独立。
+    <br>
     2）OpenGL物体建模实际上是分两步走的。第一步，在世界坐标系的原点位置绘制出该物体；第二步，通过ModelView变换矩阵对世界坐标系原点处的物体进行仿射变换，将该物体移动到世界坐标系的目标位置处。
+    <br>
     3）将ModelView变换放在glPushMatrix和glPopMatrix之间可以使本次变换和上次变换独立。
+    <br>
     4）凡是使用glPushMatrix()和glPopMatrix()的程序一般可以判定是采用世界坐标系建模。即世界坐标系固定，ModelView矩阵移动物体。
