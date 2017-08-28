@@ -18,3 +18,5 @@
 8.[有用的建议](./SeeHeart.md)
 <br>
 9.[遇到的一些问题的解决方法](./SomeProblemSolution.md)
+<br>
+10.[自己的短板记录](./Weakness.md)
