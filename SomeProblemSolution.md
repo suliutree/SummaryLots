@@ -167,13 +167,19 @@
 #### GLSL中的变量（uniform, attribute, varying）
 
     （1）uniform 变量
+    <br>
     uniform 变量是外部程序传递给（vertex和fragment）shader的变量。因此它是 application 通过函数 glUniform**() 函数赋值的。在（vertex和fragment）shader程序内部，uniform 变量就像C语言里面的常量（const），它不能被 shader 程序修改。
+    <br>
     如果 uniform 变量在 vertex 和 fragment 两者之间声明方式完全一样，则它可以在 vertex 和 fragment 共享使用。相当于一个被 vertex 和 fragment shader 共享的全局变量。
+    <br>
     uniform 变量一般用来表示：变换矩阵，材质，光照参数和颜色等信息。
     
     （2）attribute 变量
+    <br>
     attribute 变量是只能在 vertex shader 中使用的变量。fragment sghader 中不能声明 attribute 变量，变量也不能被 fragment shader 使用。
+    <br>
     一般用 attribute 变量来表示一些顶点数据，如：顶点坐标，法线，纹理坐标，顶点颜色等。在 application 中，一般用函数 glBindAttribLocation() 来绑定每个 attribute 变量的位置，然后用函数 glVertexAttribPointer() 为每个 atribute 变量赋值。
     
     （3）varying 变量
+    <br>
     varying 变量是 vertex 和 fragment shader 之间用来传递数据的。一般 vertex shader 修改 varying 变量的值，然后 fragment shader 使用该 varying 变量的值。因此 varying 变量在 vertex 和 fragment shader 二者之间的声明必须是一致的。 application 不能使用此变量。
