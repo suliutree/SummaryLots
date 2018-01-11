@@ -183,3 +183,15 @@
     （3）varying 变量
     <br>
     varying 变量是 vertex 和 fragment shader 之间用来传递数据的。一般 vertex shader 修改 varying 变量的值，然后 fragment shader 使用该 varying 变量的值。因此 varying 变量在 vertex 和 fragment shader 二者之间的声明必须是一致的。 application 不能使用此变量。
+    
+<br>
+
+#### Visual Studio 中查看动态库具体的加载位置
+
+    程序运行之后，通过 调试  -> 窗口 -> 模块，可以查看所加载的动态库具体的位置。
+    
+<br> 
+
+#### 在动态库存在的情况下出现无法定位当相应的动态库
+
+    动态库明明存在，却弹出无法定位到相应的动态库，这时候要确定下这个 dll 和其 lib 是否匹配，检查其是否是最新编译出来的。
