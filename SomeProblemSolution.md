@@ -159,8 +159,8 @@
 
 #### 材质
 
-    光与物体表面交互的一切，都是由材质及其属性来决定的，材质决定了每个物体表面最终呈现出来是什么颜色。
-    在计算机图形学中，一个物体的“形”与“色”是完全分开的，物体的形状由一组顶点（Vertex）构成的网格（Mesh）组成，而物体的表面着色则由称为材质（Material）的东西决定。所以材质通常包含纹理（Textures），着色器（Shaders）以及其它一些着色方程需要的参数，所有这些数据构成一个对象被附加到一个物体上，在渲染时这些数据被传输至GPU内存，GPU执行其中的着色器对该物体表面着色，这个过程包括贴图，光照以及其它相关的计算。
+        光与物体表面交互的一切，都是由材质及其属性来决定的，材质决定了每个物体表面最终呈现出来是什么颜色。
+        在计算机图形学中，一个物体的“形”与“色”是完全分开的，物体的形状由一组顶点（Vertex）构成的网格（Mesh）组成，而物体的表面着色则由称为材质（Material）的东西决定。所以材质通常包含纹理（Textures），着色器（Shaders）以及其它一些着色方程需要的参数，所有这些数据构成一个对象被附加到一个物体上，在渲染时这些数据被传输至GPU内存，GPU执行其中的着色器对该物体表面着色，这个过程包括贴图，光照以及其它相关的计算。
     
 <br>
 
@@ -168,30 +168,55 @@
 
     （1）uniform 变量
     <br>
-    uniform 变量是外部程序传递给（vertex和fragment）shader的变量。因此它是 application 通过函数 glUniform**() 函数赋值的。在（vertex和fragment）shader程序内部，uniform 变量就像C语言里面的常量（const），它不能被 shader 程序修改。
+        uniform 变量是外部程序传递给（vertex和fragment）shader的变量。因此它是 application 通过函数 glUniform**() 函数赋值的。在（vertex和fragment）shader程序内部，uniform 变量就像C语言里面的常量（const），它不能被 shader 程序修改。
     <br>
-    如果 uniform 变量在 vertex 和 fragment 两者之间声明方式完全一样，则它可以在 vertex 和 fragment 共享使用。相当于一个被 vertex 和 fragment shader 共享的全局变量。
+        如果 uniform 变量在 vertex 和 fragment 两者之间声明方式完全一样，则它可以在 vertex 和 fragment 共享使用。相当于一个被 vertex 和 fragment shader 共享的全局变量。
     <br>
-    uniform 变量一般用来表示：变换矩阵，材质，光照参数和颜色等信息。
+        uniform 变量一般用来表示：变换矩阵，材质，光照参数和颜色等信息。
     
     （2）attribute 变量
     <br>
-    attribute 变量是只能在 vertex shader 中使用的变量。fragment sghader 中不能声明 attribute 变量，变量也不能被 fragment shader 使用。
+        attribute 变量是只能在 vertex shader 中使用的变量。fragment sghader 中不能声明 attribute 变量，变量也不能被 fragment shader 使用。
     <br>
-    一般用 attribute 变量来表示一些顶点数据，如：顶点坐标，法线，纹理坐标，顶点颜色等。在 application 中，一般用函数 glBindAttribLocation() 来绑定每个 attribute 变量的位置，然后用函数 glVertexAttribPointer() 为每个 atribute 变量赋值。
+        一般用 attribute 变量来表示一些顶点数据，如：顶点坐标，法线，纹理坐标，顶点颜色等。在 application 中，一般用函数 glBindAttribLocation() 来绑定每个 attribute 变量的位置，然后用函数 glVertexAttribPointer() 为每个 atribute 变量赋值。
     
     （3）varying 变量
     <br>
-    varying 变量是 vertex 和 fragment shader 之间用来传递数据的。一般 vertex shader 修改 varying 变量的值，然后 fragment shader 使用该 varying 变量的值。因此 varying 变量在 vertex 和 fragment shader 二者之间的声明必须是一致的。 application 不能使用此变量。
-    
+        varying 变量是 vertex 和 fragment shader 之间用来传递数据的。一般 vertex shader 修改 varying 变量的值，然后 fragment shader 使用该 varying 变量的值。因此 varying 变量在 vertex 和 fragment shader 二者之间的声明必须是一致的。 application 不能使用此变量。
+
 <br>
 
 #### Visual Studio 中查看动态库具体的加载位置
 
-    程序运行之后，通过 调试  -> 窗口 -> 模块，可以查看所加载的动态库具体的位置。
-    
+        程序运行之后，通过 调试  -> 窗口 -> 模块，可以查看所加载的动态库具体的位置。
+
 <br> 
 
 #### 在动态库存在的情况下出现无法定位当相应的动态库
 
-    动态库明明存在，却弹出无法定位到相应的动态库，这时候要确定下这个 dll 和其 lib 是否匹配，检查其是否是最新编译出来的。
+        动态库明明存在，却弹出无法定位到相应的动态库，这时候要确定下这个 dll 和其 lib 是否匹配，检查其是否是最新编译出来的。
+
+<br>
+
+#### 使用常识估算许多基本算法的阶
+
+    * 简单循环
+    <br>
+        如果某个简单循环从1运行到 n ，那么算法很可能就是 O(n) ——时间随n线性增加。其例子有穷举查找、找到数组中的最大值、以及生成校验和。
+    
+    * 嵌套循环
+    <br>
+        如果你需要在循环中嵌套另外的循环，那么你的算法就变成了 O(m x n)，这里的 m 和 n 是两个循环的界限。这通常发生在简单的排序算法中，比如冒泡排序：外循环依次扫描数组中的每个元素，内循环确定在排序结果的何处放置该元素。这样的排序算法往往是 O(n^2)。
+        
+    * 二分法
+    <br>
+        如果你的算法在每次循环时把事物集合一分为二，那么它可能是对数型 O(lg(n)) 算法。对有序列表的二分查找、遍历二叉树、以及查找机器字中的第一个置位了的位，都可能是 O(lg(n))算法。
+     
+    * 分而治之
+    <br>
+        划分其输入，并独立的在两个部分上进行处理，然后再把结果组合起来的算法可能是 O(nlg(n))。经典的例子是快速排序，其工作方式是：把数据划分为两半，并递归的对每一半进行排序。
+    
+    * 组合
+    <br>
+        只要算法考虑事物的排列，其运行时间就有可能失去控制。这是因为排列涉及到阶乘（从数字 1 到 5 有 5! = 5x4x3x2x1 = 120种排列）。得出5个元素的组合算法所需要的时间：6个元素需要6倍的时间，7个元素需要42倍的时间。其例子包括许多公认的难题算法——旅行商问题、把东西最优的包装进容器中，划分一组数、使每一组都有相同的总和，等等。在特定的问题领域中，常常用启发式方法（heuristics）减少这些类型的算法的运行时间。
+    
