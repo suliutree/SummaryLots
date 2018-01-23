@@ -225,3 +225,20 @@
  #### DirectX 与 OpenGL 中矩阵的不同以及相关的矩阵变换
  
     http://www.cnblogs.com/graphics/archive/2012/08/02/2616017.html
+
+<br>
+
+#### 函数命名时一些常见的互补术语
+
+    Add/Remove
+    Begin/End
+    Create/Destroy
+    Enable/Disable
+    Insert/Delete
+    Lock/Unlock
+    Next/Previous
+    Open/Close
+    Push/Pop
+    Send/Receive
+    Show/Hide
+    Source/Target
