@@ -230,15 +230,15 @@
 
 #### 函数命名时一些常见的互补术语
 
-    Add/Remove
-    Begin/End
-    Create/Destroy
-    Enable/Disable
-    Insert/Delete
-    Lock/Unlock
-    Next/Previous
-    Open/Close
-    Push/Pop
-    Send/Receive
-    Show/Hide
-    Source/Target
+    Add/Remove <br>
+    Begin/End <br>
+    Create/Destroy <br>
+    Enable/Disable <br>
+    Insert/Delete <br>
+    Lock/Unlock <br>
+    Next/Previous <br>
+    Open/Close <br>
+    Push/Pop <br>
+    Send/Receive <br>
+    Show/Hide <br>
+    Source/Target <br>
