@@ -242,3 +242,11 @@
     Send/Receive <br>
     Show/Hide <br>
     Source/Target <br>
+
+<br>
+
+#### 如何查看dmp文件
+
+    （1）将 dmp 文件和相应的 dll 和 pdb 文件放到同一路径；
+    （2）用 Visual Studio 打开 dmp 文件，点击右上角 “使用仅限本机进行调试”；
+    （3）通过堆栈查看具体的崩溃位置（可能还需要链接相关代码）。
