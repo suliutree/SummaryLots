@@ -5,18 +5,14 @@
 <br>
 2.[STL](./STL.md)
 <br>
-3.[Effective C++](./EffectiveCPP.md)
+3.[操作系统](./OS.md)
 <br>
-4.[操作系统](./OS.md)
+4.[计算机网络](./Networking.md)
 <br>
-5.[计算机网络](./Networking.md)
+5.[笔试面试题](./InterviewQuestion.md)
 <br>
-6.[笔试面试题](./InterviewQuestion.md)
+6.[经典面试题](./ClassicsInterview.md)
 <br>
-7.[经典面试题](./ClassicsInterview.md)
+7.[遇到的一些问题的解决方法](./SomeProblemSolution.md)
 <br>
-8.[有用的建议](./SeeHeart.md)
-<br>
-9.[遇到的一些问题的解决方法](./SomeProblemSolution.md)
-<br>
-10.[自己的短板记录](./Weakness.md)
+8.[自己的短板记录](./Weakness.md)
