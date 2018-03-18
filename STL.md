@@ -1,7 +1,7 @@
-##STL
+## STL
 
 
-####内存分区
+#### 内存分区
 
         1.堆：由程序员手动分配和释放，完全不同于数据结构中的堆，分配方式类似链表。由malloc（C语言）或new（C++）来分配，free
         （C语言）和delete（C++）释放。若程序员不释放，程序结束时由系统释放。
@@ -18,7 +18,8 @@
         
 
 <br>
-####vector
+
+#### vector
 
         1.vector头文件：#include <vector>
         
@@ -82,8 +83,9 @@
                 c.clear()                       将容器清空
                 
 
-<br>        
-####stack
+<br>
+
+#### stack
 
         1.stack头文件：#include <stack>
         
@@ -122,7 +124,8 @@
         
 
 <br>
-####priority_queue
+
+#### priority_queue
 
         1.priority_queue头文件：#include <queue>
         
@@ -167,7 +170,8 @@
 
 
 <br>
-####set/multiset
+
+#### set/multiset
 
         1.set/multiset头文件：#include <set>
         
@@ -246,7 +250,8 @@
 
 
 <br>
-####map/multimap
+
+#### map/multimap
 
         1.map/multimap头文件：#include <map>
         
@@ -307,7 +312,8 @@
 
 
 <br>
-####string类（属于C++标准库，不属于STL，但其是STL兼容的，可以应用迭代器，算法）
+
+#### string类（属于C++标准库，不属于STL，但其是STL兼容的，可以应用迭代器，算法）
 
         1.string类头文件：#include <string>
         
@@ -437,7 +443,8 @@
         
         
 <br>
-####STL中的算法
+
+#### STL中的算法
 
         1.使用STL中的算法，要包含头文件<algorithm>，某些STL算法用于数值处理，因此被定义于头文件<numeric>。
         
