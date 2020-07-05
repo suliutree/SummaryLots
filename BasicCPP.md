@@ -992,3 +992,94 @@
         函数）。
         3）释放旧空间。（调用析构函数释放原有对象占用的内存）
 
+
+<br>
+
+#### 智能指针实现
+
+        1)智能指针将一个计数器与类指向的对象相关联，引用计数跟踪共有多少个类对象共享同一指针；
+        2)每次创建类的新对象时，初始化指针并将引用计数置为1；
+        3)当对象作为另一对象的副本而创建时，拷贝构造函数拷贝指针并增加与之相应的引用计数；
+        4)对一个对象进行赋值时，赋值操作符减少左操作数所指对象的引用计数（如果引用计数为减至0，则删除对象），并增加
+        右操作数所指对象的引用计数；这是因为左侧的5)指针指向了右侧指针所指向的对象，因此右指针所指向的对象的引用计数
+        加1；
+        6)调用析构函数时，减少引用计数，如果引用计数减至0，则删除基础对象和引用计数对象。
+        
+        template <typename T>
+        class SharedPtr{
+        public:
+                SharedPtr : t_(nullptr), count_(nullptr) {}
+
+                explicit SharedPtr(T* t) : t_(t)
+                {
+                        if (t)
+                        {
+                                count_ = new int(1);
+                        }
+                }
+
+                explicit SharedPtr(const SharedPtr& rhs)
+                {
+                        t_ = rhs.t_;
+                        count_ = rhs.count_;
+                        if (count_)
+                                (*count_)++;
+                }
+
+                ~SharedPtr() 
+                {
+                        reset();
+                }
+
+                SharedPtr& operator=(const SharedPtr& rhs)
+                {
+                        if (this == &rhs)
+                                return *this;
+                        
+                        reset();
+                        t_ = rhs.t_;
+                        count_ = rhs.count_;
+                        if (count_)
+                                (*count_)++;
+                        
+                        return *this;
+                }
+
+                SharedPtr& operator*()
+                {
+                        return *this;
+                }
+
+                T* operator->() 
+                {
+                        return t_;
+                }
+
+                T* get() const
+                {
+                        return t_;
+                }
+
+                int count() const
+                {
+                        return count_ ? *count_ : 0;
+                }
+
+                void reset()
+                {
+                        if (count_)
+                        {
+                                (*count_--);
+                                if (*count_ == 0)
+                                {
+                                        delete t_;
+                                        delete count_;
+                                }
+                        }
+                }
+
+        private:
+                T* t_;
+                int* count_;
+        };
+
