@@ -1069,7 +1069,7 @@
                 {
                         if (count_)
                         {
-                                (*count_--);
+                                (*count_)--;
                                 if (*count_ == 0)
                                 {
                                         delete t_;
